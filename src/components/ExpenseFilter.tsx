@@ -1,5 +1,5 @@
 import { Select } from "@chakra-ui/react";
-import { categories } from "../App";
+import categories from "../categories";
 
 interface Props {
   onSelectedCategory: (category: string) => void;

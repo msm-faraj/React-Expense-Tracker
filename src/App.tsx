@@ -3,15 +3,7 @@ import { ExpenceTable } from "./components/ExpenseTable";
 import ExpenseFilter from "./components/ExpenseFilter";
 import { Box } from "@chakra-ui/react";
 import { ExpenseForm } from "./components/ExpenseForm";
-
-export const categories = [
-  "Houshold",
-  "Groceres",
-  "Transportation",
-  "Cloths",
-  "Health",
-  "Entertainment",
-];
+import categories from "./categories";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -56,13 +48,11 @@ function App() {
         <ExpenseForm></ExpenseForm>
       </Box>
       <Box p={p}>
-        {" "}
         <ExpenseFilter
           onSelectedCategory={(category) => setSelectedCategory(category)}
         ></ExpenseFilter>
       </Box>
       <Box p={p}>
-        {" "}
         <ExpenceTable
           expenses={visibleExpenses}
           onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
