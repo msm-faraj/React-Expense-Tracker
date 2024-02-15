@@ -9,7 +9,6 @@ import {
   Box,
   Button,
 } from "@chakra-ui/react";
-import React from "react";
 
 interface Expense {
   // userId: number;
@@ -63,10 +62,14 @@ export const ExpenceTable = ({ expenses, onDelete }: Props) => {
               <Td>{expense.category}</Td>
               <Td>{expense.description}</Td>
               <Td>
-                <Button colorScheme="teal">Edit</Button>
+                <Button fontSize={"small"} size={"sm"} colorScheme="teal">
+                  Edit
+                </Button>
               </Td>
               <Td onClick={() => onDelete(expense.id)}>
-                <Button colorScheme="orange">Delete</Button>
+                <Button fontSize={"small"} size={"sm"} colorScheme="orange">
+                  Delete
+                </Button>
               </Td>
             </Tr>
           ))}

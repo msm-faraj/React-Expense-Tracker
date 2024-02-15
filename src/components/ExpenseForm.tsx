@@ -2,7 +2,6 @@ import {
   Text,
   Box,
   Button,
-  FormControl,
   FormLabel,
   HStack,
   Input,
@@ -14,7 +13,7 @@ import {
 import categories from "../categories";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const style = {
   colorDanger: "red.600",
@@ -22,7 +21,7 @@ const style = {
 };
 
 const schema = z.object({
-  time: z.date(),
+  time: z.string(),
   note: z.string().min(3).max(50),
   amount: z.number().min(0.01).max(100_000),
   account: z.string().min(3).max(50),
@@ -35,14 +34,24 @@ const schema = z.object({
 
 type EpxenseFormData = z.infer<typeof schema>;
 
-export const ExpenseForm = () => {
+interface Props {
+  onSubmit: (data: EpxenseFormData) => void;
+}
+
+export const ExpenseForm = ({ onSubmit }: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        onSubmit(data);
+        reset();
+      })}
+    >
       <VStack
         divider={<StackDivider borderColor="gray.200" />}
         spacing={1}
@@ -53,11 +62,7 @@ export const ExpenseForm = () => {
             <FormLabel htmlFor="time">Time</FormLabel>
           </Box>
           <Box>
-            <Input
-              {...register("time", { valueAsDate: true })}
-              id="time"
-              type="text"
-            ></Input>
+            <Input {...register("time")} id="time" type="text"></Input>
             {errors.time && (
               <Text fontSize={style.errorFontSize} color={style.colorDanger}>
                 {errors.time.message}
@@ -129,12 +134,12 @@ export const ExpenseForm = () => {
         </HStack>
         <HStack>
           <Box>
-            <FormLabel htmlFor="descripton">descripton</FormLabel>
+            <FormLabel htmlFor="description">descripton</FormLabel>
           </Box>
           <Box>
             <Input
               {...register("description")}
-              id="descripton"
+              id="description"
               type="text"
             ></Input>
             {errors.description && (
