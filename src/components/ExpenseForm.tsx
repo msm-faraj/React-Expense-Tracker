@@ -46,111 +46,109 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
     formState: { errors },
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
   return (
-    <form
-      onSubmit={handleSubmit((data) => {
-        onSubmit(data);
-        reset();
-      })}
-    >
-      <VStack
-        divider={<StackDivider borderColor="gray.200" />}
-        spacing={1}
-        align="stretch"
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          onSubmit(data);
+          reset();
+        })}
       >
-        <HStack>
-          <Box>
-            <FormLabel htmlFor="time">Time</FormLabel>
-          </Box>
-          <Box>
-            <Input {...register("time")} id="time" type="text"></Input>
-            {errors.time && (
-              <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-                {errors.time.message}
-              </Text>
-            )}
-          </Box>
-        </HStack>
-        <HStack>
-          <Box>
-            <FormLabel htmlFor="account">account</FormLabel>
-          </Box>
-          <Box>
-            <Input {...register("account")} id="account" type="text"></Input>
-            {errors.account && (
-              <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-                {errors.account.message}
-              </Text>
-            )}
-          </Box>
-        </HStack>
-        <HStack>
-          <Box>
-            <FormLabel htmlFor="category">category</FormLabel>
-          </Box>
-          <Box>
-            <Select {...register("category")} id="category">
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </Select>
-            {errors.category && (
-              <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-                {errors.category.message}
-              </Text>
-            )}
-          </Box>
-        </HStack>
-        <HStack>
-          <Box>
-            <FormLabel htmlFor="amount">amount</FormLabel>
-          </Box>
-          <Box>
-            <Input
-              {...register("amount", { valueAsNumber: true })}
-              id="amount"
-              type="text"
-            ></Input>
-            {errors.amount && (
-              <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-                {errors.amount.message}
-              </Text>
-            )}
-          </Box>
-        </HStack>
-        <HStack>
-          <Box>
-            <FormLabel htmlFor="note">note</FormLabel>
-          </Box>
-          <Box>
-            <Input {...register("note")} id="note" type="text"></Input>
-            {errors.note && (
-              <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-                {errors.note.message}
-              </Text>
-            )}
-          </Box>
-        </HStack>
-        <HStack>
-          <Box>
-            <FormLabel htmlFor="description">descripton</FormLabel>
-          </Box>
-          <Box>
-            <Input
-              {...register("description")}
-              id="description"
-              type="text"
-            ></Input>
-            {errors.description && (
-              <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-                {errors.description.message}
-              </Text>
-            )}
-          </Box>
-        </HStack>
-        <Button type="submit">Send</Button>
-      </VStack>
-    </form>
+        <VStack divider={<StackDivider />} spacing={1} align="stretch">
+          <HStack>
+            <Box>
+              <FormLabel htmlFor="time">Time</FormLabel>
+            </Box>
+            <Box>
+              <Input {...register("time")} id="time" type="text"></Input>
+              {errors.time && (
+                <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+                  {errors.time.message}
+                </Text>
+              )}
+            </Box>
+          </HStack>
+          <HStack>
+            <Box>
+              <FormLabel htmlFor="account">account</FormLabel>
+            </Box>
+            <Box>
+              <Input {...register("account")} id="account" type="text"></Input>
+              {errors.account && (
+                <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+                  {errors.account.message}
+                </Text>
+              )}
+            </Box>
+          </HStack>
+          <HStack>
+            <Box>
+              <FormLabel htmlFor="category">category</FormLabel>
+            </Box>
+            <Box>
+              <Select {...register("category")} id="category">
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </Select>
+              {errors.category && (
+                <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+                  {errors.category.message}
+                </Text>
+              )}
+            </Box>
+          </HStack>
+          <HStack>
+            <Box>
+              <FormLabel htmlFor="amount">amount</FormLabel>
+            </Box>
+            <Box>
+              <Input
+                {...register("amount", { valueAsNumber: true })}
+                id="amount"
+                type="text"
+              ></Input>
+              {errors.amount && (
+                <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+                  {errors.amount.message}
+                </Text>
+              )}
+            </Box>
+          </HStack>
+          <HStack>
+            <Box>
+              <FormLabel htmlFor="note">note</FormLabel>
+            </Box>
+            <Box>
+              <Input {...register("note")} id="note" type="text"></Input>
+              {errors.note && (
+                <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+                  {errors.note.message}
+                </Text>
+              )}
+            </Box>
+          </HStack>
+          <HStack>
+            <Box>
+              <FormLabel htmlFor="description">descripton</FormLabel>
+            </Box>
+            <Box>
+              <Input
+                {...register("description")}
+                id="description"
+                type="text"
+              ></Input>
+              {errors.description && (
+                <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+                  {errors.description.message}
+                </Text>
+              )}
+            </Box>
+          </HStack>
+          <Button type="submit">Send</Button>
+        </VStack>
+      </form>
+    </Box>
   );
 };

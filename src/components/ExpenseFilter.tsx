@@ -1,4 +1,4 @@
-import { Select } from "@chakra-ui/react";
+import { Box, Select } from "@chakra-ui/react";
 import categories from "../categories";
 
 interface Props {
@@ -7,15 +7,17 @@ interface Props {
 
 const ExpenseFilter = ({ onSelectedCategory }: Props) => {
   return (
-    <Select onChange={(event) => onSelectedCategory(event.target.value)}>
-      <option value="">All Categorries</option>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
+      <Select onChange={(event) => onSelectedCategory(event.target.value)}>
+        <option value="">All Categorries</option>
 
-      {categories.map((category) => (
-        <option key={category} value={category}>
-          {category}
-        </option>
-      ))}
-    </Select>
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </Select>
+    </Box>
   );
 };
 

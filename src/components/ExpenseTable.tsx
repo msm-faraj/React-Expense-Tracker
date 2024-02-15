@@ -38,9 +38,9 @@ interface Props {
 export const ExpenceTable = ({ expenses, onDelete }: Props) => {
   if (expenses.length === 0) return null;
   return (
-    <Box>
-      <Table size={"sm"}>
-        <Thead>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
+      <Table size={"xs"}>
+        <Thead fontSize={"xs"}>
           <Tr>
             <Th>Time</Th>
             <Th>Note</Th>
@@ -52,7 +52,7 @@ export const ExpenceTable = ({ expenses, onDelete }: Props) => {
             <Th>Delete</Th>
           </Tr>
         </Thead>
-        <Tbody>
+        <Tbody fontSize={"xs"}>
           {expenses.map((expense) => (
             <Tr key={expense.id}>
               <Td>{expense.time}</Td>
@@ -62,19 +62,19 @@ export const ExpenceTable = ({ expenses, onDelete }: Props) => {
               <Td>{expense.category}</Td>
               <Td>{expense.description}</Td>
               <Td>
-                <Button fontSize={"small"} size={"sm"} colorScheme="teal">
+                <Button fontSize={"xs"} size={"xs"} colorScheme="teal">
                   Edit
                 </Button>
               </Td>
               <Td onClick={() => onDelete(expense.id)}>
-                <Button fontSize={"small"} size={"sm"} colorScheme="orange">
+                <Button fontSize={"xs"} size={"xs"} colorScheme="orange">
                   Delete
                 </Button>
               </Td>
             </Tr>
           ))}
         </Tbody>
-        <Tfoot>
+        <Tfoot fontSize={"xs"}>
           <Tr>
             <Th>Income</Th>
             <Th>

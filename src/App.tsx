@@ -3,10 +3,65 @@ import { ExpenceTable } from "./components/ExpenseTable";
 import ExpenseFilter from "./components/ExpenseFilter";
 import { Box } from "@chakra-ui/react";
 import { ExpenseForm } from "./components/ExpenseForm";
+import ColorModeSwitch from "./components/ColorModeSwitch";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [expenses, setExpenses] = useState([
+    {
+      id: 1,
+      time: "2024-12-01",
+      note: "Note1",
+      amount: 100,
+      account: "Account",
+      category: "Utilities",
+      description: "Des1",
+    },
+    {
+      id: 2,
+      time: "2024-12-02",
+      note: "Note2",
+      amount: 200,
+      account: "Account",
+      category: "Groceries",
+      description: "Des2",
+    },
+    {
+      id: 3,
+      time: "2024-12-03",
+      note: "Note3",
+      amount: 300,
+      account: "Account",
+      category: "Utilities",
+      description: "Des3",
+    },
+    {
+      id: 1,
+      time: "2024-12-01",
+      note: "Note1",
+      amount: 100,
+      account: "Account",
+      category: "Utilities",
+      description: "Des1",
+    },
+    {
+      id: 2,
+      time: "2024-12-02",
+      note: "Note2",
+      amount: 200,
+      account: "Account",
+      category: "Groceries",
+      description: "Des2",
+    },
+    {
+      id: 3,
+      time: "2024-12-03",
+      note: "Note3",
+      amount: 300,
+      account: "Account",
+      category: "Utilities",
+      description: "Des3",
+    },
     {
       id: 1,
       time: "2024-12-01",
@@ -42,7 +97,10 @@ function App() {
   const p = 5;
 
   return (
-    <Box width={"90%"} p={10}>
+    <Box width={"90%"} p={5}>
+      <Box p={p}>
+        <ColorModeSwitch></ColorModeSwitch>
+      </Box>
       <Box p={p}>
         <ExpenseForm
           onSubmit={(newExpense) =>
