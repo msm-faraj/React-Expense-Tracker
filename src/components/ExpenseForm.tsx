@@ -10,7 +10,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-import categories from "../categories";
+import categories from "../data/categories";
+import accounts from "../data/accounts";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -25,7 +26,7 @@ const schema = z.object({
   note: z.string().min(3).max(50),
   amount: z.number().min(0.01).max(100_000),
   account: z.string().min(3).max(50),
-  category: z.enum(categories),
+  category: z.string(),
   description: z
     .string()
     .min(3, { message: "Description must be at least 3 char" })
@@ -43,7 +44,7 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
   return (
     <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
@@ -67,12 +68,21 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
               )}
             </Box>
           </HStack>
+
+          {/* Account */}
           <HStack>
             <Box>
               <FormLabel htmlFor="account">account</FormLabel>
             </Box>
             <Box>
-              <Input {...register("account")} id="account" type="text"></Input>
+              <Select {...register("account")} id="account">
+                <option>Select Account</option>
+                {accounts.map((account) => (
+                  <option key={account.id} value={account.name}>
+                    {account.name}
+                  </option>
+                ))}
+              </Select>
               {errors.account && (
                 <Text fontSize={style.errorFontSize} color={style.colorDanger}>
                   {errors.account.message}
@@ -80,15 +90,18 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
               )}
             </Box>
           </HStack>
+
+          {/* Category */}
           <HStack>
             <Box>
               <FormLabel htmlFor="category">category</FormLabel>
             </Box>
             <Box>
               <Select {...register("category")} id="category">
+                <option>Select Category</option>
                 {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
+                  <option key={category.id} value={category.name}>
+                    {category.name}
                   </option>
                 ))}
               </Select>
@@ -146,7 +159,9 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
               )}
             </Box>
           </HStack>
-          <Button type="submit">Send</Button>
+          <Button isDisabled={!isValid} type="submit">
+            Send
+          </Button>
         </VStack>
       </form>
     </Box>
