@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ExpenceTable } from "./components/ExpenseTable";
 import { Box, HStack } from "@chakra-ui/react";
 import { ExpenseForm } from "./components/ExpenseForm";
-import ColorModeSwitch from "./components/ColorModeSwitch";
 import expenseTable from "./data/expenses";
 import LoginForm from "./components/LoginForm";
 import TopBar from "./components/TopBar";
