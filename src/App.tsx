@@ -3,8 +3,9 @@ import { ExpenceTable } from "./components/ExpenseTable";
 import { Box, HStack } from "@chakra-ui/react";
 import { ExpenseForm } from "./components/ExpenseForm";
 import expenseTable from "./data/expenses";
-import LoginForm from "./components/LoginForm";
+import SignInForm from "./components/SignInForm";
 import TopBar from "./components/TopBar";
+import SignUpForm from "./components/SignUpForm";
 
 interface Expense {
   // userId: number;
@@ -27,12 +28,16 @@ interface Expense {
 }
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
+  const [showSignUp, setShowSignUp] = useState(true);
   const [selectedAccount, setSelectedAccount] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [expenses, setExpenses] = useState(expenseTable);
 
   const handleShowSignIn = () => {
     setShowSignIn(!showSignIn);
+  };
+  const handleShowSignUp = () => {
+    setShowSignUp(!showSignUp);
   };
 
   const visibleExpenses = expenses.filter((e) => {
@@ -50,11 +55,27 @@ function App() {
   return (
     <Box width={"100%"} p={3}>
       <Box p={p}>
-        <TopBar onShowSignIn={handleShowSignIn}></TopBar>
+        <TopBar
+          onShowSignIn={handleShowSignIn}
+          onShowSignUp={handleShowSignUp}
+        ></TopBar>
       </Box>
       <HStack align={"center"} justify={"center"}>
+        {/* SignUn Form */}
+        <Box p={p} width={"65%"}>
+          {showSignUp === true && <SignUpForm></SignUpForm>}
+        </Box>
+      </HStack>
+      <HStack align={"center"} justify={"center"}>
+        {/* SignIn Form */}
+        <Box p={p} width={"65%"}>
+          {showSignIn === true && <SignInForm></SignInForm>}
+        </Box>
+      </HStack>
+
+      <HStack align={"center"} justify={"center"}>
         {/* Expense Form */}
-        <Box p={p} width={"45%"}>
+        <Box p={p} width={"65%"}>
           <ExpenseForm
             onSubmit={(newExpense) =>
               setExpenses([
@@ -63,10 +84,6 @@ function App() {
               ])
             }
           ></ExpenseForm>
-        </Box>
-        {/* SignIn Form */}
-        <Box p={p} width={"45%"}>
-          {showSignIn === true && <LoginForm></LoginForm>}
         </Box>
       </HStack>
 
