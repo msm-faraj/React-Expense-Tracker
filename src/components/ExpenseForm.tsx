@@ -8,6 +8,7 @@ import {
   Select,
   StackDivider,
   VStack,
+  Heading,
 } from "@chakra-ui/react";
 
 import categories from "../data/categories";
@@ -48,6 +49,9 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
   return (
     <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
+      <Heading as={"h2"} size={"md"} mb={5}>
+        Expense Form
+      </Heading>
       <form
         onSubmit={handleSubmit((data) => {
           onSubmit(data);

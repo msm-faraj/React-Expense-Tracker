@@ -3,9 +3,10 @@ import React from "react";
 import ColorModeSwitch from "./ColorModeSwitch";
 interface Props {
   onShowSignIn: () => void;
+  onShowSignUp: () => void;
 }
 
-const TopBar = ({ onShowSignIn }: Props) => {
+const TopBar = ({ onShowSignIn, onShowSignUp }: Props) => {
   return (
     <HStack
       justifyContent={"space-between"}
@@ -15,6 +16,7 @@ const TopBar = ({ onShowSignIn }: Props) => {
     >
       <ColorModeSwitch></ColorModeSwitch>
       <Button onClick={onShowSignIn}>Sign In</Button>
+      <Button onClick={onShowSignUp}>Sign Up</Button>
     </HStack>
   );
 };
