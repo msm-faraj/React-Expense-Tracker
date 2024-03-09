@@ -7,25 +7,6 @@ import SignInForm from "./components/SignInForm";
 import TopBar from "./components/TopBar";
 import SignUpForm from "./components/SignUpForm";
 
-interface Expense {
-  // userId: number;
-  id: number;
-  time: string;
-  note: string;
-  amount: number;
-  account: string;
-  category: string;
-  description: string;
-  // deletedAt: Date;
-  // category: {
-  //   id: number;
-  //   name: string;
-  // };
-  // account: {
-  //   id: number;
-  //   name: string;
-  // };
-}
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
   const [showSignUp, setShowSignUp] = useState(true);

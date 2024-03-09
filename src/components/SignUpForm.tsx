@@ -3,7 +3,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 
 const schema = z.object({
   username: z
@@ -27,6 +27,7 @@ interface User {
   username: string;
   email: string;
   password: string;
+  token: string;
 }
 
 //** SignUpForm Component **/
@@ -47,11 +48,8 @@ const SignUpForm = () => {
     };
     setUser(newUser);
     axios
-      .post<User>(
-        "https://my-expense-tracker-8e533260d61a.herokuapp.com/api/users",
-        newUser
-      )
-      .then((res) => console.log(res.data));
+      .post<User>("/api/users", newUser)
+      .then((res) => console.log(res.data.token));
   };
   //** Render Phase **/
   return (
