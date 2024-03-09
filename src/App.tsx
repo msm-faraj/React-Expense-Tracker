@@ -6,6 +6,8 @@ import expenseTable from "./data/expenses";
 import SignInForm from "./components/SignInForm";
 import TopBar from "./components/TopBar";
 import SignUpForm from "./components/SignUpForm";
+import { Routes, Route } from "react-router-dom";
+import Register from "./Register";
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -34,50 +36,85 @@ function App() {
   const p = 4;
 
   return (
-    <Box width={"100%"} p={3}>
+    <>
       <Box p={p}>
         <TopBar
           onShowSignIn={handleShowSignIn}
           onShowSignUp={handleShowSignUp}
         ></TopBar>
       </Box>
-      <HStack align={"center"} justify={"center"}>
-        {/* SignUn Form */}
-        <Box p={p} width={"65%"}>
-          {showSignUp === true && <SignUpForm></SignUpForm>}
-        </Box>
-      </HStack>
-      <HStack align={"center"} justify={"center"}>
-        {/* SignIn Form */}
-        <Box p={p} width={"65%"}>
-          {showSignIn === true && <SignInForm></SignInForm>}
-        </Box>
-      </HStack>
-
-      <HStack align={"center"} justify={"center"}>
-        {/* Expense Form */}
-        <Box p={p} width={"65%"}>
-          <ExpenseForm
-            onSubmit={(newExpense) =>
-              setExpenses([
-                ...expenses,
-                { ...newExpense, id: expenses.length + 1 },
-              ])
-            }
-          ></ExpenseForm>
-        </Box>
-      </HStack>
-
-      <Box p={p}>
-        <ExpenceTable
-          expenses={visibleExpenses}
-          onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
-          onSelectCategory={(category) => setSelectedCategory(category)}
-          onSelectedAccount={(account) => setSelectedAccount(account)}
-        ></ExpenceTable>
-      </Box>
-    </Box>
+      <Routes>
+        <Route
+          // SignUp Form
+          path="/"
+          element={
+            <HStack align={"center"} justify={"center"}>
+              <Box p={p} width={"450px"} mt={24}>
+                <Register></Register>
+              </Box>
+            </HStack>
+          }
+        ></Route>
+        <Route
+          // SignIn Form
+          path="signIn"
+          element={
+            <HStack align={"center"} justify={"center"}>
+              <Box p={p} width={"450px"} mt={24}>
+                {showSignIn === true && <SignInForm></SignInForm>}
+              </Box>
+            </HStack>
+          }
+        ></Route>
+      </Routes>
+    </>
   );
 }
+
+// <Box width={"100%"} p={3}>
+//   <Box p={p}>
+//     <TopBar
+//       onShowSignIn={handleShowSignIn}
+//       onShowSignUp={handleShowSignUp}
+//     ></TopBar>
+//   </Box>
+//   <HStack align={"center"} justify={"center"}>
+//     {/* SignUn Form */}
+//     <Box p={p} width={"65%"}>
+//       {showSignUp === true && <SignUpForm></SignUpForm>}
+//     </Box>
+//   </HStack>
+//   <HStack align={"center"} justify={"center"}>
+//     {/* SignIn Form */}
+//     <Box p={p} width={"65%"}>
+//       {showSignIn === true && <SignInForm></SignInForm>}
+//     </Box>
+//   </HStack>
+
+//   <HStack align={"center"} justify={"center"}>
+//     {/* Expense Form */}
+//     <Box p={p} width={"65%"}>
+//       <ExpenseForm
+//         onSubmit={(newExpense) =>
+//           setExpenses([
+//             ...expenses,
+//             { ...newExpense, id: expenses.length + 1 },
+//           ])
+//         }
+//       ></ExpenseForm>
+//     </Box>
+//   </HStack>
+
+//   <Box p={p}>
+//     <ExpenceTable
+//       expenses={visibleExpenses}
+//       onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
+//       onSelectCategory={(category) => setSelectedCategory(category)}
+//       onSelectedAccount={(account) => setSelectedAccount(account)}
+//     ></ExpenceTable>
+//   </Box>
+// </Box>
+// );
+// }
 
 export default App;
