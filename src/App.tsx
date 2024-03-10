@@ -7,7 +7,8 @@ import SignInForm from "./components/SignInForm";
 import TopBar from "./components/TopBar";
 import SignUpForm from "./components/SignUpForm";
 import { Routes, Route } from "react-router-dom";
-import Register from "./Register";
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -50,18 +51,18 @@ function App() {
           element={
             <HStack align={"center"} justify={"center"}>
               <Box p={p} width={"450px"} mt={24}>
-                <Register></Register>
+                <SignUp></SignUp>
               </Box>
             </HStack>
           }
         ></Route>
         <Route
           // SignIn Form
-          path="signIn"
+          path="/api/login"
           element={
             <HStack align={"center"} justify={"center"}>
               <Box p={p} width={"450px"} mt={24}>
-                {showSignIn === true && <SignInForm></SignInForm>}
+                {showSignIn === true && <SignIn></SignIn>}
               </Box>
             </HStack>
           }
