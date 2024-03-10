@@ -5,7 +5,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "../src/api/axios";
+import axios from "./api/axios";
 
 const USERNAME_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const EMAIL_REGEX =
@@ -25,8 +25,8 @@ import {
 } from "@chakra-ui/react";
 import SignUpForm from "./components/SignUpForm";
 
-const Register = () => {
-  const userRef = useRef(null);
+const SignUp = () => {
+  const usernameRef = useRef(null);
   const errRef = useRef(null);
 
   const [username, setUsername] = useState("");
@@ -72,7 +72,7 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(REGISTER_URL, {
+      const response: any = await axios.post(REGISTER_URL, {
         username: username,
         email: email,
         password: password,
@@ -81,7 +81,11 @@ const Register = () => {
       setSuccess(true);
       // clear input fields
     } catch (err) {
-      console.error(err);
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Registration Failed");
+      }
     }
   };
 
@@ -96,7 +100,7 @@ const Register = () => {
           </Text>
           <Text as={"span"}>
             {/* put router link here */}
-            <Link href="#">Sign In</Link>
+            <Link href="/api/login">Sign In</Link>
           </Text>
         </Box>
       ) : (
@@ -107,7 +111,7 @@ const Register = () => {
                 {errMsg}
               </Text>
             )}
-            <Heading as={"h1"}>Register</Heading>
+            <Heading as={"h1"}>Sign Up</Heading>
             <form onSubmit={handleSubmit}>
               {/* Username */}
               <FormLabel mt={4} htmlFor="username">
@@ -127,9 +131,10 @@ const Register = () => {
               <Input
                 type="text"
                 id="username"
-                ref={userRef}
+                ref={usernameRef}
                 autoComplete="off"
                 onChange={(e) => setUsername(e.target.value)}
+                value={username}
                 required
                 aria-invalid={validUsername ? "false" : "true"}
                 // aria-describedby="uidnote"
@@ -160,9 +165,10 @@ const Register = () => {
               <Input
                 type="email"
                 id="email"
-                ref={userRef}
+                ref={usernameRef}
                 autoComplete="off"
                 onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 required
                 aria-invalid={validUsername ? "false" : "true"}
                 aria-describedby="uidnote"
@@ -199,6 +205,7 @@ const Register = () => {
                 type="password"
                 id="password"
                 onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 required
                 aria-invalid={validPassword ? "false" : "true"}
                 aria-describedby="pwdnote"
@@ -278,7 +285,7 @@ const Register = () => {
               Already registerd? <br />
               <Text as={"span"}>
                 {/* put router link here */}
-                <Link href="#">Sign In</Link>
+                <Link href="/api/login">Sign In</Link>
               </Text>
             </Text>
           </section>
@@ -288,4 +295,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SignUp;
