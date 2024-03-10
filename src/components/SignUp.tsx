@@ -5,7 +5,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "./api/axios";
+import axios from "../api/axios";
 
 const USERNAME_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const EMAIL_REGEX =
@@ -23,7 +23,7 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import SignUpForm from "./components/SignUpForm";
+import SignUpForm from "./SignUpForm";
 
 const SignUp = () => {
   const usernameRef = useRef(null);

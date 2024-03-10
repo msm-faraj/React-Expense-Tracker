@@ -7,14 +7,14 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "./context/AuthProvider";
-import axios from "./api/axios";
-import { AuthContextType } from "./types/auth";
+import { useRef, useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
+import { AuthContextType } from "../types/auth";
 const LOGIN_URL = "/api/auth";
 
 const SignIn = () => {
-  const { setAuth } = useContext(AuthContext) as AuthContextType;
+  const { setAuth } = useAuth() as AuthContextType;
   const emailRef = useRef(null);
   const errRef = useRef(null);
 
@@ -67,7 +67,7 @@ const SignIn = () => {
           <Text mb={5}>You've successfully logged in</Text>
           <Text as={"span"}>
             {/* put router link here */}
-            <Link href="/">Go to home</Link>
+            <Link href="/api/home">Go to home</Link>
           </Text>
         </Box>
       ) : (
