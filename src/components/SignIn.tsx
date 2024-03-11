@@ -7,10 +7,9 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { useRef, useState, useEffect } from "react";
-import axios from "../api/axios";
-import { useContext } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import axios from "../api/axios";
 
 const LOGIN_URL = "/api/auth";
 
@@ -21,7 +20,7 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
-  const auth = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
 
   //   useEffect(() => {
   //     if (userRef.current !== null) userRef.current.focus();
@@ -39,27 +38,25 @@ const SignIn = () => {
         email,
       });
       const accessToken = await response?.data?.token;
+      console.log(accessToken);
       const newAuth = {
         email: email,
         password: password,
         accessToken: accessToken,
       };
-      // setAuth(newAuth);
+      setAuth(newAuth);
       setSuccess(true);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 400) {
         setErrMsg("Missing Email or Password");
-      } else if (err.response?.status === 401) {
-        setErrMsg("Unauthorized");
       } else {
         setErrMsg("Login Failed");
       }
-      if (errRef.current !== null) errRef.current.focus();
     }
   };
-  // console.log("login-auth: ", auth);
+  console.log("login-auth: ", auth);
 
   return (
     <>
