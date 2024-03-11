@@ -8,20 +8,20 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useRef, useState, useEffect } from "react";
-import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
-import { AuthContextType } from "../types/auth";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
+
 const LOGIN_URL = "/api/auth";
 
 const SignIn = () => {
-  const { setAuth } = useAuth() as AuthContextType;
   const emailRef = useRef(null);
   const errRef = useRef(null);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  const auth = useContext(AuthContext);
 
   //   useEffect(() => {
   //     if (userRef.current !== null) userRef.current.focus();
@@ -38,13 +38,13 @@ const SignIn = () => {
         password,
         email,
       });
-      // console.log(JSON.stringify(response?.data));
-      // console.log(JSON.stringify(response));
-      const accessToken = response?.data?.token;
-      console.log(accessToken);
-      setAuth({ email, password, accessToken });
-      setPassword("");
-      setEmail("");
+      const accessToken = await response?.data?.token;
+      const newAuth = {
+        email: email,
+        password: password,
+        accessToken: accessToken,
+      };
+      // setAuth(newAuth);
       setSuccess(true);
     } catch (err) {
       if (!err?.response) {
@@ -59,6 +59,7 @@ const SignIn = () => {
       if (errRef.current !== null) errRef.current.focus();
     }
   };
+  // console.log("login-auth: ", auth);
 
   return (
     <>
