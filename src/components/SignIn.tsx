@@ -1,15 +1,8 @@
-import {
-  Box,
-  Button,
-  FormLabel,
-  Heading,
-  Input,
-  Link,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
 import { useRef, useState, useEffect, useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import axios from "../api/axios";
+import { Link } from "react-router-dom";
 
 const LOGIN_URL = "/api/auth";
 
@@ -65,7 +58,7 @@ const SignIn = () => {
           <Text mb={5}>You've successfully logged in</Text>
           <Text as={"span"}>
             {/* put router link here */}
-            <Link href="/api/home">Go to home</Link>
+            <Link to="/api/home">Go to home</Link>
           </Text>
         </Box>
       ) : (

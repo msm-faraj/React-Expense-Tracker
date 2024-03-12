@@ -22,6 +22,6 @@ export const AuthContextProvider = ({
     accessToken: "string",
   });
 
-  const value = useMemo(() => ({ auth, setAuth }), [auth]);
+  const value = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
