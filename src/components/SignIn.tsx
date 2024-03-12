@@ -1,27 +1,19 @@
-import {
-  Box,
-  Button,
-  FormLabel,
-  Heading,
-  Input,
-  Link,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
 import { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "./context/AuthProvider";
-import axios from "./api/axios";
-import { AuthContextType } from "./types/auth";
+import { AuthContext } from "./context/AuthContext";
+import axios from "../api/axios";
+import { Link } from "react-router-dom";
+
 const LOGIN_URL = "/api/auth";
 
 const SignIn = () => {
-  const { setAuth } = useContext(AuthContext) as AuthContextType;
   const emailRef = useRef(null);
   const errRef = useRef(null);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  const { auth, setAuth } = useContext(AuthContext);
 
   //   useEffect(() => {
   //     if (userRef.current !== null) userRef.current.focus();
@@ -38,27 +30,26 @@ const SignIn = () => {
         password,
         email,
       });
-      // console.log(JSON.stringify(response?.data));
-      // console.log(JSON.stringify(response));
-      const accessToken = response?.data?.token;
+      const accessToken = await response?.data?.token;
       console.log(accessToken);
-      setAuth({ email, password, accessToken });
-      setPassword("");
-      setEmail("");
+      const newAuth = {
+        email: email,
+        password: password,
+        accessToken: accessToken,
+      };
+      setAuth(newAuth);
       setSuccess(true);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 400) {
         setErrMsg("Missing Email or Password");
-      } else if (err.response?.status === 401) {
-        setErrMsg("Unauthorized");
       } else {
         setErrMsg("Login Failed");
       }
-      if (errRef.current !== null) errRef.current.focus();
     }
   };
+  console.log("login-auth: ", auth);
 
   return (
     <>
@@ -67,7 +58,7 @@ const SignIn = () => {
           <Text mb={5}>You've successfully logged in</Text>
           <Text as={"span"}>
             {/* put router link here */}
-            <Link href="/">Go to home</Link>
+            <Link to="/api/home">Go to home</Link>
           </Text>
         </Box>
       ) : (
