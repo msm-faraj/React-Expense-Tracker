@@ -14,15 +14,8 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = "/api/users";
 
 import React from "react";
-import {
-  Box,
-  Button,
-  FormLabel,
-  Heading,
-  Input,
-  Link,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import SignUpForm from "./SignUpForm";
 
 const SignUp = () => {
@@ -100,7 +93,7 @@ const SignUp = () => {
           </Text>
           <Text as={"span"}>
             {/* put router link here */}
-            <Link href="/api/login">Sign In</Link>
+            <Link to="/api/login">Sign In</Link>
           </Text>
         </Box>
       ) : (
@@ -285,7 +278,7 @@ const SignUp = () => {
               Already registerd? <br />
               <Text as={"span"}>
                 {/* put router link here */}
-                <Link href="/api/login">Sign In</Link>
+                <Link to="/api/login">Sign In</Link>
               </Text>
             </Text>
           </section>

@@ -31,7 +31,7 @@ const SignIn = () => {
         email,
       });
       const accessToken = await response?.data?.token;
-      console.log(accessToken);
+      // console.log(accessToken);
       const newAuth = {
         email: email,
         password: password,
@@ -49,7 +49,7 @@ const SignIn = () => {
       }
     }
   };
-  console.log("login-auth: ", auth);
+  // console.log("login-auth: ", auth);
 
   return (
     <>
@@ -101,7 +101,7 @@ const SignIn = () => {
               Need an Account? <br />
               <Text as={"span"}>
                 {/* put router link here */}
-                <Link href="/">Sign Up</Link>
+                <Link to="/">Sign Up</Link>
               </Text>
             </Text>
           </section>

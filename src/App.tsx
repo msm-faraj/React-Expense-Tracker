@@ -6,7 +6,7 @@ import TopBar from "./components/TopBar";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
-import Transactions from "./data/Transactions";
+import Transactions from "./data/TransactionTable";
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
