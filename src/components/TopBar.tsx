@@ -15,8 +15,8 @@ const TopBar = ({ onShowSignIn, onShowSignUp }: Props) => {
       borderRadius={5}
     >
       <ColorModeSwitch></ColorModeSwitch>
-      <Button onClick={onShowSignIn}>Sign In</Button>
-      <Button onClick={onShowSignUp}>Sign Up</Button>
+      {/* <Button onClick={onShowSignIn}>Sign In</Button> */}
+      {/* <Button onClick={onShowSignUp}>Sign Up</Button> */}
     </HStack>
   );
 };

@@ -5,17 +5,19 @@ import {
   FormLabel,
   HStack,
   Input,
-  Select,
   StackDivider,
   VStack,
   Heading,
 } from "@chakra-ui/react";
 
-import categories from "../data/categories";
-import accounts from "../data/accounts";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import axios from "../../api/axios";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+
+const TRANSACTION_URL = "/api/transactions";
 
 const style = {
   colorDanger: "red.600",
@@ -23,24 +25,42 @@ const style = {
 };
 
 const schema = z.object({
-  time: z.string(),
+  type: z.string(),
+  date: z.string(),
   note: z.string().min(3).max(50),
   amount: z.number().min(0.01).max(100_000),
-  account: z.string().min(3).max(50),
-  category: z.string(),
+  // account: z.string().min(3).max(50),
+  // category: z.string(),
   description: z
     .string()
     .min(3, { message: "Description must be at least 3 char" })
     .max(100),
 });
+interface Props {
+  forceUpdate: () => void;
+}
 
 type EpxenseFormData = z.infer<typeof schema>;
 
-interface Props {
-  onSubmit: (data: EpxenseFormData) => void;
-}
+export const TransactionForm = ({ forceUpdate }: Props) => {
+  const [newtransaction, setNewTransaction] = useState({});
+  const { auth } = useContext(AuthContext);
 
-export const ExpenseForm = ({ onSubmit }: Props) => {
+  const onSubmit = async (e: EpxenseFormData) => {
+    try {
+      const response = await axios.post(TRANSACTION_URL, e, {
+        headers: {
+          "x-auth-token": auth.accessToken,
+        },
+      });
+      console.log(response.data);
+      setNewTransaction(response.data);
+      forceUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -48,33 +68,34 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
     formState: { errors, isValid },
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"50%"}>
       <Heading as={"h2"} size={"md"} mb={5}>
         Expense Form
       </Heading>
       <form
-        onSubmit={handleSubmit((data) => {
-          onSubmit(data);
+        onSubmit={handleSubmit((e) => {
+          onSubmit(e);
           reset();
         })}
       >
         <VStack divider={<StackDivider />} spacing={1} align="stretch">
+          {/* Date */}
           <HStack>
             <Box>
-              <FormLabel htmlFor="time">Time</FormLabel>
+              <FormLabel htmlFor="date">date</FormLabel>
             </Box>
             <Box>
-              <Input {...register("time")} id="time" type="text"></Input>
-              {errors.time && (
+              <Input {...register("date")} id="date" type="text"></Input>
+              {errors.date && (
                 <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-                  {errors.time.message}
+                  {errors.date.message}
                 </Text>
               )}
             </Box>
           </HStack>
 
           {/* Account */}
-          <HStack>
+          {/* <HStack>
             <Box>
               <FormLabel htmlFor="account">account</FormLabel>
             </Box>
@@ -93,10 +114,10 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
                 </Text>
               )}
             </Box>
-          </HStack>
+          </HStack> */}
 
           {/* Category */}
-          <HStack>
+          {/* <HStack>
             <Box>
               <FormLabel htmlFor="category">category</FormLabel>
             </Box>
@@ -115,7 +136,9 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
                 </Text>
               )}
             </Box>
-          </HStack>
+          </HStack> */}
+
+          {/* Amount */}
           <HStack>
             <Box>
               <FormLabel htmlFor="amount">amount</FormLabel>
@@ -133,6 +156,8 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
               )}
             </Box>
           </HStack>
+
+          {/* Note */}
           <HStack>
             <Box>
               <FormLabel htmlFor="note">note</FormLabel>
@@ -146,6 +171,23 @@ export const ExpenseForm = ({ onSubmit }: Props) => {
               )}
             </Box>
           </HStack>
+
+          {/* Type */}
+          <HStack>
+            <Box>
+              <FormLabel htmlFor="type">type</FormLabel>
+            </Box>
+            <Box>
+              <Input {...register("type")} id="type" type="text"></Input>
+              {errors.type && (
+                <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+                  {errors.type.message}
+                </Text>
+              )}
+            </Box>
+          </HStack>
+
+          {/* Description */}
           <HStack>
             <Box>
               <FormLabel htmlFor="description">descripton</FormLabel>
