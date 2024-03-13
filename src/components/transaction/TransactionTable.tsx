@@ -1,5 +1,5 @@
 import axios from "../../api/axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import {
   Box,
@@ -36,18 +36,11 @@ interface Account {
   id: number;
   name: string;
 }
-interface Props {
-  onDelete: (id: number) => void;
-  onSelectCategory: (category: Category) => void;
-  onSelectedAccount: (account: Account) => void;
-}
+interface Props {}
 
-const Transactions = ({
-  onDelete,
-  onSelectCategory,
-  onSelectedAccount,
-}: Props) => {
+export const TransactionTable = ({}: Props) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const { auth } = useContext(AuthContext);
 
@@ -59,10 +52,14 @@ const Transactions = ({
         },
       })
       .then((res) => setTransactions(res.data));
-  }, []);
+  }, [ignored]);
+
+  console.log("transactionTable.tsx rendered");
 
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"}>
+      <Button onClick={forceUpdate}>re-render</Button>
+
       <Text as={"h1"}>Transactions for {auth.email}</Text>
       <Table size={"xs"}>
         <Thead fontSize={"xs"}>
@@ -70,7 +67,7 @@ const Transactions = ({
             <Th p={3}>Time</Th>
             <Th p={3}>Type</Th>
             <Th p={3}>Amount</Th>
-            <Th>
+            {/* <Th>
               <ExpenseAccountFilter
                 onSelectedAccount={(account) => onSelectedAccount(account)}
               ></ExpenseAccountFilter>
@@ -79,14 +76,14 @@ const Transactions = ({
               <ExpenseCategoryFilter
                 onSelectedCategory={(category) => onSelectCategory(category)}
               ></ExpenseCategoryFilter>
-            </Th>
+            </Th> */}
             <Th p={3}>
               <HStack>
                 <Text>note</Text>
                 <RxCaretSort />
               </HStack>
             </Th>
-            <Th p={3}>Descripton</Th>
+            <Th p={3}>Des</Th>
             <Th p={3}>Edit</Th>
             <Th p={3}>Delete</Th>
           </Tr>
@@ -102,10 +99,10 @@ const Transactions = ({
                 <Td p={3} pl={2}>
                   {transaction.amount}
                 </Td>
-                <Td p={3} pl={2}>
+                {/* <Td p={3} pl={2}>
                   {transaction.acountId}
                 </Td>
-                <Td pl={2}>{transaction.categoryId}</Td>
+                <Td pl={2}>{transaction.categoryId}</Td> */}
                 <Td>{transaction.note}</Td>
                 <Td>{transaction.description}</Td>
                 <Td>
@@ -113,9 +110,7 @@ const Transactions = ({
                     Edit
                   </Button>
                 </Td>
-                <Td
-                // onClick={() => onDelete(transaction.id)}
-                >
+                <Td>
                   <Button fontSize={"xs"} size={"xs"} colorScheme="red">
                     Delete
                   </Button>
@@ -141,5 +136,3 @@ const Transactions = ({
     </Box>
   );
 };
-
-export default Transactions;

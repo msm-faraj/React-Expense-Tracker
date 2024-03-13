@@ -17,7 +17,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const TRANSACTION_URL = "/api/transactions";
@@ -43,6 +43,7 @@ const schema = z.object({
 type EpxenseFormData = z.infer<typeof schema>;
 
 export const TransactionForm = () => {
+  const [newtransaction, setNewTransaction] = useState({});
   const { auth } = useContext(AuthContext);
 
   const onSubmit = async (e: EpxenseFormData) => {
@@ -53,6 +54,7 @@ export const TransactionForm = () => {
         },
       });
       console.log(response.data);
+      setNewTransaction(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -65,7 +67,7 @@ export const TransactionForm = () => {
     formState: { errors, isValid },
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"50%"}>
       <Heading as={"h2"} size={"md"} mb={5}>
         Expense Form
       </Heading>

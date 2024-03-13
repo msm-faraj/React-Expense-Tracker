@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { ExpenceTable } from "./components/ExpenseTable";
 import { Box, HStack } from "@chakra-ui/react";
 import expenseTable from "./data/expenses";
 import TopBar from "./components/TopBar";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
-import Transactions from "./components/transaction/TransactionTable";
-import { TransactionForm } from "./components/transaction/TransactionForm";
+import Transaction from "./components/transaction/Transaction";
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -73,32 +71,7 @@ function App() {
           path="/api/home"
           element={
             <>
-              {/* Expense Form */}
-              {/* <HStack align={"center"} justify={"center"}>
-                <Box p={p} width={"65%"}>
-                  <ExpenseForm
-                    onSubmit={(newExpense) =>
-                      setExpenses([
-                        ...expenses,
-                        { ...newExpense, id: expenses.length + 1 },
-                      ])
-                    }
-                  ></ExpenseForm>
-                </Box>
-              </HStack> */}
-              {/* Transaction Table */}
-              {/* <Box p={p}>
-                <ExpenceTable
-                  expenses={visibleExpenses}
-                  onDelete={(id) =>
-                    setExpenses(expenses.filter((e) => e.id !== id))
-                  }
-                  onSelectCategory={(category) => setSelectedCategory(category)}
-                  onSelectedAccount={(account) => setSelectedAccount(account)}
-                ></ExpenceTable>
-              </Box> */}
-              <TransactionForm></TransactionForm>
-              <Transactions></Transactions>
+              <Transaction />
             </>
           }
         ></Route>
