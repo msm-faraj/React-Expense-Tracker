@@ -1,12 +1,7 @@
-import { Button, ColorModeContext, HStack } from "@chakra-ui/react";
-import React from "react";
+import { HStack } from "@chakra-ui/react";
 import ColorModeSwitch from "./ColorModeSwitch";
-interface Props {
-  onShowSignIn: () => void;
-  onShowSignUp: () => void;
-}
 
-const TopBar = ({ onShowSignIn, onShowSignUp }: Props) => {
+const TopBar = () => {
   return (
     <HStack
       justifyContent={"space-between"}
@@ -15,8 +10,6 @@ const TopBar = ({ onShowSignIn, onShowSignUp }: Props) => {
       borderRadius={5}
     >
       <ColorModeSwitch></ColorModeSwitch>
-      {/* <Button onClick={onShowSignIn}>Sign In</Button> */}
-      {/* <Button onClick={onShowSignUp}>Sign Up</Button> */}
     </HStack>
   );
 };

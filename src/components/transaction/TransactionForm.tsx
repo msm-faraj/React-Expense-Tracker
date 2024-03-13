@@ -14,7 +14,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const TRANSACTION_URL = "/api/transactions";
@@ -43,18 +43,18 @@ interface Props {
 type EpxenseFormData = z.infer<typeof schema>;
 
 export const TransactionForm = ({ forceUpdate }: Props) => {
-  const [newtransaction, setNewTransaction] = useState({});
+  // const [newtransaction, setNewTransaction] = useState({});
   const { auth } = useContext(AuthContext);
 
   const onSubmit = async (e: EpxenseFormData) => {
     try {
-      const response = await axios.post(TRANSACTION_URL, e, {
+      await axios.post(TRANSACTION_URL, e, {
         headers: {
           "x-auth-token": auth.accessToken,
         },
       });
-      console.log(response.data);
-      setNewTransaction(response.data);
+      // console.log(response.data);
+      // setNewTransaction(response.data);
       forceUpdate();
     } catch (err) {
       console.error(err);

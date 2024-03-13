@@ -15,10 +15,6 @@ const SignIn = () => {
   const [success, setSuccess] = useState(false);
   const { auth, setAuth } = useContext(AuthContext);
 
-  //   useEffect(() => {
-  //     if (userRef.current !== null) userRef.current.focus();
-  //   }, []);
-
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
@@ -40,13 +36,7 @@ const SignIn = () => {
       setAuth(newAuth);
       setSuccess(true);
     } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 400) {
-        setErrMsg("Missing Email or Password");
-      } else {
-        setErrMsg("Login Failed");
-      }
+      console.error(err);
     }
   };
   // console.log("login-auth: ", auth);

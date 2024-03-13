@@ -18,7 +18,7 @@ const Transaction = () => {
     <>
       <VStack>
         <TransactionForm forceUpdate={forceUpdate} />
-        <TransactionTable update={update} forceUpdate={forceUpdate} />
+        <TransactionTable update={update} />
       </VStack>
     </>
   );
