@@ -53,8 +53,6 @@ export const TransactionTable = ({ update }: Props) => {
       .then((res) => setTransactions(res.data));
   }, [update]);
 
-  console.log("transactionTable.tsx rendered");
-
   return (
     <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"}>
       <Text as={"h1"}>Transactions for {auth.email}</Text>
