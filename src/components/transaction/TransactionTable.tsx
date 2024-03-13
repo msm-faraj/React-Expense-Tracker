@@ -1,6 +1,6 @@
-import axios from "../api/axios";
+import axios from "../../api/axios";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../components/context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import {
   Box,
   Button,
@@ -15,8 +15,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { RxCaretSort } from "react-icons/rx";
-import ExpenseAccountFilter from "../components/ExpenseAccountFilter";
-import ExpenseCategoryFilter from "../components/ExpenseCategoryFilter";
+import ExpenseAccountFilter from "../ExpenseAccountFilter";
+import ExpenseCategoryFilter from "../ExpenseCategoryFilter";
 const GET_TRANSACTION_URL = "/api/transactions";
 
 interface Transaction {
@@ -48,6 +48,7 @@ const Transactions = ({
   onSelectedAccount,
 }: Props) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
   const { auth } = useContext(AuthContext);
 
   useEffect(() => {
@@ -91,33 +92,36 @@ const Transactions = ({
           </Tr>
         </Thead>
         <Tbody fontSize={"xs"}>
-          {transactions.map((transaction) => (
-            <Tr key={transaction.id}>
-              <Td p={3}>{transaction.date}</Td>
-              <Td p={3}>{transaction.type}</Td>
-              <Td p={3} pl={2}>
-                {transaction.amount}
-              </Td>
-              <Td p={3} pl={2}>
-                {transaction.acountId}
-              </Td>
-              <Td pl={2}>{transaction.categoryId}</Td>
-              <Td>{transaction.note}</Td>
-              <Td>{transaction.description}</Td>
-              <Td>
-                <Button fontSize={"xs"} size={"xs"} colorScheme="teal">
-                  Edit
-                </Button>
-              </Td>
-              <Td
-              // onClick={() => onDelete(transaction.id)}
-              >
-                <Button fontSize={"xs"} size={"xs"} colorScheme="red">
-                  Delete
-                </Button>
-              </Td>
-            </Tr>
-          ))}
+          {transactions
+            .slice(0)
+            .reverse()
+            .map((transaction) => (
+              <Tr key={transaction.id}>
+                <Td p={3}>{transaction.date}</Td>
+                <Td p={3}>{transaction.type}</Td>
+                <Td p={3} pl={2}>
+                  {transaction.amount}
+                </Td>
+                <Td p={3} pl={2}>
+                  {transaction.acountId}
+                </Td>
+                <Td pl={2}>{transaction.categoryId}</Td>
+                <Td>{transaction.note}</Td>
+                <Td>{transaction.description}</Td>
+                <Td>
+                  <Button fontSize={"xs"} size={"xs"} colorScheme="teal">
+                    Edit
+                  </Button>
+                </Td>
+                <Td
+                // onClick={() => onDelete(transaction.id)}
+                >
+                  <Button fontSize={"xs"} size={"xs"} colorScheme="red">
+                    Delete
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
         </Tbody>
         <Tfoot fontSize={"xs"}>
           <Tr>

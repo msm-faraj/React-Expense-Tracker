@@ -6,7 +6,8 @@ import TopBar from "./components/TopBar";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
-import Transactions from "./data/TransactionTable";
+import Transactions from "./components/transaction/TransactionTable";
+import { TransactionForm } from "./components/transaction/TransactionForm";
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(true);
@@ -96,6 +97,7 @@ function App() {
                   onSelectedAccount={(account) => setSelectedAccount(account)}
                 ></ExpenceTable>
               </Box> */}
+              <TransactionForm></TransactionForm>
               <Transactions></Transactions>
             </>
           }
