@@ -1,5 +1,5 @@
 import axios from "../../api/axios";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import {
   Box,
@@ -26,14 +26,14 @@ interface Transaction {
   id: string;
 }
 
-interface Category {
-  id: number;
-  name: string;
-}
-interface Account {
-  id: number;
-  name: string;
-}
+// interface Category {
+//   id: number;
+//   name: string;
+// }
+// interface Account {
+//   id: number;
+//   name: string;
+// }
 interface Props {
   update: number;
 }
@@ -52,8 +52,6 @@ export const TransactionTable = ({ update }: Props) => {
       })
       .then((res) => setTransactions(res.data));
   }, [update]);
-
-  console.log("transactionTable.tsx rendered");
 
   return (
     <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"}>

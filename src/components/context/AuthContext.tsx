@@ -1,22 +1,22 @@
-import React, { createContext, useMemo, useState } from "react";
+import { PropsWithChildren, createContext, useMemo, useState } from "react";
 
-interface Auth {
+type Auth = {
   email: string;
   password: string;
   accessToken: string;
-}
+};
 
-interface AuthContextType {
-  auth: Auth;
-  setAuth: React.Dispatch<React.SetStateAction<AuthContextType["auth"]>>;
-}
+export const AuthContext = createContext({
+  auth: {
+    email: "string",
+    password: "string",
+    accessToken: "string",
+  },
+  setAuth: (_auth: Auth) => {},
+});
 
-export const AuthContext = createContext<AuthContextType | null>(null);
-
-export const AuthContextProvider = ({
-  children,
-}: React.PropsWithChildren<{}>) => {
-  const [auth, setAuth] = useState<AuthContextType["auth"]>({
+export const AuthContextProvider = ({ children }: PropsWithChildren<{}>) => {
+  const [auth, setAuth] = useState<Auth>({
     email: "string",
     password: "string",
     accessToken: "string",

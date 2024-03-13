@@ -16,7 +16,6 @@ const REGISTER_URL = "/api/users";
 import React from "react";
 import { Box, Button, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import SignUpForm from "./SignUpForm";
 
 const SignUp = () => {
   const usernameRef = useRef(null);
@@ -74,11 +73,7 @@ const SignUp = () => {
       setSuccess(true);
       // clear input fields
     } catch (err) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Registration Failed");
-      }
+      console.error(err);
     }
   };
 
