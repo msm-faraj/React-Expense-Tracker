@@ -15,8 +15,6 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { RxCaretSort } from "react-icons/rx";
-import ExpenseAccountFilter from "../ExpenseAccountFilter";
-import ExpenseCategoryFilter from "../ExpenseCategoryFilter";
 const GET_TRANSACTION_URL = "/api/transactions";
 
 interface Transaction {
@@ -36,11 +34,12 @@ interface Account {
   id: number;
   name: string;
 }
-interface Props {}
+interface Props {
+  update: number;
+}
 
-export const TransactionTable = ({}: Props) => {
+export const TransactionTable = ({ update }: Props) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const { auth } = useContext(AuthContext);
 
@@ -52,14 +51,12 @@ export const TransactionTable = ({}: Props) => {
         },
       })
       .then((res) => setTransactions(res.data));
-  }, [ignored]);
+  }, [update]);
 
   console.log("transactionTable.tsx rendered");
 
   return (
     <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"}>
-      <Button onClick={forceUpdate}>re-render</Button>
-
       <Text as={"h1"}>Transactions for {auth.email}</Text>
       <Table size={"xs"}>
         <Thead fontSize={"xs"}>

@@ -5,14 +5,11 @@ import {
   FormLabel,
   HStack,
   Input,
-  Select,
   StackDivider,
   VStack,
   Heading,
 } from "@chakra-ui/react";
 
-import categories from "../../data/categories";
-import accounts from "../../data/accounts";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -39,10 +36,13 @@ const schema = z.object({
     .min(3, { message: "Description must be at least 3 char" })
     .max(100),
 });
+interface Props {
+  forceUpdate: () => void;
+}
 
 type EpxenseFormData = z.infer<typeof schema>;
 
-export const TransactionForm = () => {
+export const TransactionForm = ({ forceUpdate }: Props) => {
   const [newtransaction, setNewTransaction] = useState({});
   const { auth } = useContext(AuthContext);
 
@@ -55,6 +55,7 @@ export const TransactionForm = () => {
       });
       console.log(response.data);
       setNewTransaction(response.data);
+      forceUpdate();
     } catch (err) {
       console.error(err);
     }
