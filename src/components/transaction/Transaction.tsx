@@ -1,7 +1,8 @@
 import { useReducer } from "react";
 import { TransactionForm } from "./TransactionForm";
 import { TransactionTable } from "./TransactionTable";
-import { VStack } from "@chakra-ui/react";
+import { HStack, VStack } from "@chakra-ui/react";
+import Account from "../account/Account";
 
 interface Transaction {
   type: string;
@@ -17,7 +18,10 @@ const Transaction = () => {
   return (
     <>
       <VStack>
+        <Account></Account>
+
         <TransactionForm forceUpdate={forceUpdate} />
+
         <TransactionTable update={update} />
       </VStack>
     </>
