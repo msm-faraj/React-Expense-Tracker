@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   HStack,
+  Heading,
   Table,
   Tbody,
   Td,
@@ -55,7 +56,9 @@ export const TransactionTable = ({ update }: Props) => {
 
   return (
     <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"}>
-      <Text as={"h1"}>Transactions for {auth.email}</Text>
+      <Heading as={"h2"} size={"md"} pb={4}>
+        Transaction Table
+      </Heading>
       <Table size={"xs"}>
         <Thead fontSize={"xs"}>
           <Tr>

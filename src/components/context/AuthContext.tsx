@@ -17,7 +17,7 @@ export const AuthContext = createContext({
 
 export const AuthContextProvider = ({ children }: PropsWithChildren<{}>) => {
   const [auth, setAuth] = useState<Auth>({
-    email: "string",
+    email: "",
     password: "string",
     accessToken: "string",
   });

@@ -46,6 +46,13 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
   // const [newtransaction, setNewTransaction] = useState({});
   const { auth } = useContext(AuthContext);
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
+
   const onSubmit = async (e: EpxenseFormData) => {
     try {
       await axios.post(TRANSACTION_URL, e, {
@@ -61,16 +68,10 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
     }
   };
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid },
-  } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
   return (
     <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"50%"}>
-      <Heading as={"h2"} size={"md"} mb={5}>
-        Expense Form
+      <Heading as={"h2"} size={"md"} pb={4}>
+        Transaction Form
       </Heading>
       <form
         onSubmit={handleSubmit((e) => {

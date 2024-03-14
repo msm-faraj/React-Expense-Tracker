@@ -1,5 +1,5 @@
 import { Box, HStack } from "@chakra-ui/react";
-import TopBar from "./components/TopBar";
+import TopBar from "./components/topbar/TopBar";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "./components/SignUp";
 import Transaction from "./components/transaction/Transaction";
@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       {/* Topbar */}
-      <Box p={p}>
+      <Box pb={5}>
         <TopBar></TopBar>
       </Box>
       {/* Routes */}
