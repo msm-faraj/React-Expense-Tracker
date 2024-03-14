@@ -10,7 +10,6 @@ import {
   Text,
   Flex,
   Center,
-  Divider,
 } from "@chakra-ui/react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,12 +22,10 @@ import { useReducer } from "react";
 const ACCOUNT_URL = "/api/accounts";
 
 const schema = z.object({
-  // id: z.string(),
   name: z.string().min(3).max(50),
-  // type: z.string(),
 });
-interface Props {}
 
+// this is because of validation error
 type AccountFormData = {
   id: string;
   name: string;
@@ -91,8 +88,8 @@ const Account = () => {
           </Heading>
           {/* Account */}
           <HStack>
-            <Box>
-              <FormLabel htmlFor="name">New Account</FormLabel>
+            <Box p={2} justifyContent={"center"}>
+              <FormLabel htmlFor="name">create</FormLabel>
             </Box>
             <Box>
               <Input {...register("name")} id="name" type="text"></Input>
