@@ -18,7 +18,8 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useReducer } from "react";
 
-const ACCOUNT_URL = "/api/accounts";
+const CATEGORY_POST_URL = "/api/categories";
+const CATEGORY_GET_URL = "/api/categories/expense";
 
 const schema = z.object({
   name: z.string().min(3).max(50),
@@ -28,12 +29,16 @@ const schema = z.object({
 type AccountFormData = {
   id: string;
   name: string;
+  type: string;
+  userId: string;
 };
 
-const Account = () => {
+const CategoryExpense = () => {
   const { auth } = useContext(AuthContext);
   const [update, forceUpdate] = useReducer((x) => x + 1, 0);
-  const [accounts, setAccounts] = useState<AccountFormData[]>([]);
+  const [categoriesIncome, setCategoriesIncome] = useState<AccountFormData[]>(
+    []
+  );
 
   const {
     register,
@@ -45,10 +50,10 @@ const Account = () => {
   const onSubmit = async (e: AccountFormData) => {
     try {
       await axios.post(
-        ACCOUNT_URL,
+        CATEGORY_POST_URL,
         {
           name: e.name,
-          type: "income", // must remove
+          type: "expense",
         },
         {
           headers: {
@@ -64,16 +69,16 @@ const Account = () => {
 
   useEffect(() => {
     axios
-      .get<AccountFormData[]>(ACCOUNT_URL, {
+      .get<AccountFormData[]>(CATEGORY_GET_URL, {
         headers: {
           "x-auth-token": auth.accessToken,
         },
       })
-      .then((res) => setAccounts(res.data));
+      .then((res) => setCategoriesIncome(res.data));
   }, [update]);
 
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"50%"} mb={10}>
+    <Box>
       <form
         onSubmit={handleSubmit((e) => {
           onSubmit(e);
@@ -82,7 +87,7 @@ const Account = () => {
       >
         <VStack divider={<StackDivider p={1} />} spacing={1} align="stretch">
           <Heading as={"h2"} size={"md"}>
-            Accounts
+            Expense Categories
           </Heading>
           {/* Account */}
           <HStack>
@@ -110,7 +115,7 @@ const Account = () => {
             gap={1}
             flexWrap={"wrap"}
           >
-            {accounts.map((account) => (
+            {categoriesIncome.map((account) => (
               <Box
                 boxShadow={"md"}
                 borderRadius={5}
@@ -127,4 +132,4 @@ const Account = () => {
     </Box>
   );
 };
-export default Account;
+export default CategoryExpense;
