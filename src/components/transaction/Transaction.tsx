@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import { TransactionForm } from "./TransactionForm";
 import { TransactionTable } from "./TransactionTable";
-import { HStack, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import Account from "../account/Account";
 
 interface Transaction {
