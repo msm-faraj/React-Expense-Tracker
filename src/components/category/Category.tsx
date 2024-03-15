@@ -1,10 +1,21 @@
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Box } from "@chakra-ui/react";
+import {
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  Box,
+  Heading,
+} from "@chakra-ui/react";
 import CategoryIncome from "./CategoryIncome";
 import CategoryExpense from "./CategoryExpense";
 
 const Category = () => {
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"50%"} mb={10}>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"} mb={10}>
+      <Heading p={2} borderRadius={5} as={"h2"} fontSize={20}>
+        Categories
+      </Heading>
       <Tabs isFitted size="md" variant="line">
         <TabList>
           <Tab>Income</Tab>

@@ -9,10 +9,11 @@ const TopBar = () => {
 
   return (
     <HStack
+      position={"relative"}
+      zIndex={5}
       justifyContent={"space-between"}
       boxShadow={"dark-lg"}
       p={5}
-      borderRadius={5}
     >
       <Heading as={"h1"} size={"md"}>
         React-Expense-Tracker
