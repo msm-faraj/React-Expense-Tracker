@@ -1,14 +1,13 @@
 import {
   Heading,
   VStack,
-  StackDivider,
   HStack,
-  FormLabel,
   Input,
   Button,
   Box,
   Text,
-  Flex,
+  Stack,
+  Icon,
 } from "@chakra-ui/react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +16,8 @@ import axios from "../../api/axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useReducer } from "react";
+import { CiTrash } from "react-icons/ci";
+import { CiEdit } from "react-icons/ci";
 
 const ACCOUNT_URL = "/api/accounts";
 
@@ -48,7 +49,6 @@ const Account = () => {
         ACCOUNT_URL,
         {
           name: e.name,
-          type: "income", // must remove
         },
         {
           headers: {
@@ -61,6 +61,19 @@ const Account = () => {
       console.error(err);
     }
   };
+  const onDelete = async (id: string) => {
+    try {
+      await axios.delete(`${ACCOUNT_URL}/${id}`, {
+        headers: {
+          "x-auth-token": auth.accessToken,
+        },
+      });
+      forceUpdate();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const onEdit = async () => {};
 
   useEffect(() => {
     axios
@@ -73,55 +86,61 @@ const Account = () => {
   }, [update]);
 
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"50%"} mb={10}>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"60%"} mb={10}>
       <form
         onSubmit={handleSubmit((e) => {
           onSubmit(e);
           reset();
         })}
       >
-        <VStack divider={<StackDivider p={1} />} spacing={1} align="stretch">
-          <Heading as={"h2"} size={"md"}>
+        <VStack align="stretch">
+          <Heading p={2} borderRadius={5} as={"h2"} fontSize={20}>
             Accounts
           </Heading>
-          {/* Account */}
-          <HStack>
-            <Box p={2} justifyContent={"center"}>
-              <FormLabel htmlFor="name">create</FormLabel>
-            </Box>
-            <Box>
-              <Input {...register("name")} id="name" type="text"></Input>
-              {errors.name && (
-                <Text fontSize={"small"} color={"red.500"}>
-                  {errors.name.message}
-                </Text>
-              )}
-            </Box>
-            <Box>
-              <Button isDisabled={!isValid} type="submit">
-                Add
-              </Button>
-            </Box>
+          {/* Create Account */}
+          <HStack p={1}>
+            <Input {...register("name")} id="name" type="text"></Input>
+            <Button isDisabled={!isValid} type="submit">
+              Add
+            </Button>
           </HStack>
+          {errors.name && (
+            <Text p={1} fontSize={12} color={"red.500"}>
+              {errors.name.message}
+            </Text>
+          )}
 
-          <Flex
-            justifyContent={"flex-start"}
-            overflow={"auto"}
-            gap={1}
-            flexWrap={"wrap"}
-          >
+          <Stack gap={1}>
             {accounts.map((account) => (
-              <Box
-                boxShadow={"md"}
+              <Stack
+                direction={"row"}
+                justify={"space-between"}
+                boxShadow={"base"}
                 borderRadius={5}
                 key={account.id}
-                p={1}
-                m={1}
+                p={2}
+                pl={3}
               >
-                {account.name}
-              </Box>
+                <Text fontSize={"1rem"}>{account.name}</Text>
+                <HStack gap={5} pr={3}>
+                  <Icon
+                    onClick={onEdit}
+                    color={"green.400"}
+                    fontSize={"1.5rem"}
+                  >
+                    <CiEdit />
+                  </Icon>
+                  <Icon
+                    onClick={() => onDelete(account.id)}
+                    color={"red.400"}
+                    fontSize={"1.5rem"}
+                  >
+                    <CiTrash />
+                  </Icon>
+                </HStack>
+              </Stack>
             ))}
-          </Flex>
+          </Stack>
         </VStack>
       </form>
     </Box>
