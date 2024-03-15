@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       {/* Topbar */}
-      <Box pb={5}>
+      <Box pb={5} position="relative" top={0} right={0} w={"100%"}>
         <TopBar></TopBar>
       </Box>
       {/* Routes */}

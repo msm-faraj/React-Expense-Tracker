@@ -86,7 +86,7 @@ const Account = () => {
   }, [update]);
 
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"60%"} mb={10}>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"} mb={10}>
       <form
         onSubmit={handleSubmit((e) => {
           onSubmit(e);

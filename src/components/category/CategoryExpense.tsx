@@ -1,14 +1,12 @@
 import {
-  Heading,
   VStack,
-  StackDivider,
   HStack,
-  FormLabel,
   Input,
   Button,
   Box,
   Text,
-  Flex,
+  Stack,
+  Icon,
 } from "@chakra-ui/react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,8 +15,9 @@ import axios from "../../api/axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useReducer } from "react";
+import { CiEdit, CiTrash } from "react-icons/ci";
 
-const CATEGORY_POST_URL = "/api/categories";
+const CATEGORY_URL = "/api/categories";
 const CATEGORY_GET_URL = "/api/categories/expense";
 
 const schema = z.object({
@@ -26,7 +25,7 @@ const schema = z.object({
 });
 
 // this is because of validation error
-type AccountFormData = {
+type CategoryFormData = {
   id: string;
   name: string;
   type: string;
@@ -36,7 +35,7 @@ type AccountFormData = {
 const CategoryExpense = () => {
   const { auth } = useContext(AuthContext);
   const [update, forceUpdate] = useReducer((x) => x + 1, 0);
-  const [categoriesIncome, setCategoriesIncome] = useState<AccountFormData[]>(
+  const [categoriesExpense, setCategoriesIncome] = useState<CategoryFormData[]>(
     []
   );
 
@@ -45,12 +44,12 @@ const CategoryExpense = () => {
     handleSubmit,
     reset,
     formState: { errors, isValid },
-  } = useForm<AccountFormData>({ resolver: zodResolver(schema) });
+  } = useForm<CategoryFormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = async (e: AccountFormData) => {
+  const onSubmit = async (e: CategoryFormData) => {
     try {
       await axios.post(
-        CATEGORY_POST_URL,
+        CATEGORY_URL,
         {
           name: e.name,
           type: "expense",
@@ -67,9 +66,22 @@ const CategoryExpense = () => {
     }
   };
 
+  const onDelete = async (id: string) => {
+    try {
+      await axios.delete(`${CATEGORY_URL}/${id}`, {
+        headers: {
+          "x-auth-token": auth.accessToken,
+        },
+      });
+      forceUpdate();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     axios
-      .get<AccountFormData[]>(CATEGORY_GET_URL, {
+      .get<CategoryFormData[]>(CATEGORY_GET_URL, {
         headers: {
           "x-auth-token": auth.accessToken,
         },
@@ -85,48 +97,50 @@ const CategoryExpense = () => {
           reset();
         })}
       >
-        <VStack divider={<StackDivider p={1} />} spacing={1} align="stretch">
-          <Heading as={"h2"} size={"md"}>
-            Expense Categories
-          </Heading>
+        <VStack align="stretch">
           {/* Account */}
-          <HStack>
-            <Box p={2} justifyContent={"center"}>
-              <FormLabel htmlFor="name">create</FormLabel>
-            </Box>
-            <Box>
-              <Input {...register("name")} id="name" type="text"></Input>
-              {errors.name && (
-                <Text fontSize={"small"} color={"red.500"}>
-                  {errors.name.message}
-                </Text>
-              )}
-            </Box>
-            <Box>
-              <Button isDisabled={!isValid} type="submit">
-                Add
-              </Button>
-            </Box>
+          <HStack p={1}>
+            <Input {...register("name")} id="name" type="text"></Input>
+            <Button isDisabled={!isValid} type="submit">
+              Add
+            </Button>
           </HStack>
-
-          <Flex
-            justifyContent={"flex-start"}
-            overflow={"auto"}
-            gap={1}
-            flexWrap={"wrap"}
-          >
-            {categoriesIncome.map((account) => (
-              <Box
-                boxShadow={"md"}
+          {errors.name && (
+            <Text p={1} fontSize={12} color={"red.500"}>
+              {errors.name.message}
+            </Text>
+          )}
+          <Stack gap={1}>
+            {categoriesExpense.map((expenseCategory) => (
+              <Stack
+                direction={"row"}
+                justify={"space-between"}
+                boxShadow={"base"}
                 borderRadius={5}
-                key={account.id}
-                p={1}
-                m={1}
+                key={expenseCategory.id}
+                p={2}
+                pl={3}
               >
-                {account.name}
-              </Box>
+                <Text fontSize={"1rem"}>{expenseCategory.name}</Text>
+                <HStack gap={5} pr={3}>
+                  <Icon
+                    // onClick={onEdit}
+                    color={"green.400"}
+                    fontSize={"1.5rem"}
+                  >
+                    <CiEdit />
+                  </Icon>
+                  <Icon
+                    onClick={() => onDelete(expenseCategory.id)}
+                    color={"red.400"}
+                    fontSize={"1.5rem"}
+                  >
+                    <CiTrash />
+                  </Icon>
+                </HStack>
+              </Stack>
             ))}
-          </Flex>
+          </Stack>
         </VStack>
       </form>
     </Box>
