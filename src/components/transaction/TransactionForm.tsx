@@ -9,6 +9,7 @@ import {
   VStack,
   Heading,
   Select,
+  Stack,
 } from "@chakra-ui/react";
 
 import { z } from "zod";
@@ -58,21 +59,11 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
 
   const onSubmit = async (e: EpxenseFormData) => {
     try {
-      await axios.post(
-        TRANSACTION_URL,
-        {
-          amount: e.amount,
-          note: e.note,
-          description: e.description,
-          date: e.date,
-          type: e.type,
+      await axios.post(TRANSACTION_URL, e, {
+        headers: {
+          "x-auth-token": auth.accessToken,
         },
-        {
-          headers: {
-            "x-auth-token": auth.accessToken,
-          },
-        }
-      );
+      });
       // console.log(response.data);
       // setNewTransaction(response.data);
       forceUpdate();
@@ -94,40 +85,23 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
           reset();
         })}
       >
-        <VStack divider={<StackDivider />} spacing={1} align="stretch">
+        <Stack p={2} align="stretch" gap={3}>
           {/* Account */}
           <HStack>
             <FormLabel htmlFor="account">account</FormLabel>
-            <Select {...register("account")} id="account">
-              {/* <option>Select Account</option> */}
+            <Input {...register("account")} id="account"></Input>
+
+            {/* <Select {...register("account")} id="account">
               {accounts.map((account) => (
                 <option key={account.id} value={account.name}>
                   {account.name}
                 </option>
               ))}
-            </Select>
+            </Select> */}
           </HStack>
           {errors.account && (
             <Text fontSize={style.errorFontSize} color={style.colorDanger}>
               {errors.account.message}
-            </Text>
-          )}
-
-          {/* Category */}
-          <HStack>
-            <FormLabel htmlFor="category">category</FormLabel>
-            <Select {...register("category")} id="category">
-              {/* <option>Select Category</option> */}
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </Select>
-          </HStack>
-          {errors.category && (
-            <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-              {errors.category.message}
             </Text>
           )}
 
@@ -137,12 +111,31 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
             <Select {...register("type")} id="type">
               {/* <option>Select Type</option> */}
               <option>expense</option>
-              <option>inocme</option>
+              <option>income</option>
             </Select>
           </HStack>
           {errors.type && (
             <Text fontSize={style.errorFontSize} color={style.colorDanger}>
               {errors.type.message}
+            </Text>
+          )}
+
+          {/* Category */}
+          <HStack>
+            <FormLabel htmlFor="category">category</FormLabel>
+            <Input {...register("category")} id="category"></Input>
+
+            {/* <Select {...register("category")} id="category">
+              {categories.map((category) => (
+                <option key={category.id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </Select> */}
+          </HStack>
+          {errors.category && (
+            <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+              {errors.category.message}
             </Text>
           )}
 
@@ -163,7 +156,7 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
             <Input
               {...register("amount", { valueAsNumber: true })}
               id="amount"
-              type="text"
+              type="number"
             ></Input>
           </HStack>
           {errors.amount && (
@@ -197,10 +190,10 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
               {errors.description.message}
             </Text>
           )}
-          <Button isDisabled={!isValid} type="submit">
-            Send
+          <Button mt={5} isDisabled={!isValid} type="submit">
+            Add
           </Button>
-        </VStack>
+        </Stack>
       </form>
     </Box>
   );
