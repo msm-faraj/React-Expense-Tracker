@@ -18,6 +18,7 @@ import axios from "../../api/axios";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { AccountContext } from "../context/AccountContext";
+import { CategoriesIncomeContext } from "../context/CategoryIncomeContext";
 
 const TRANSACTION_URL = "/api/transactions";
 
@@ -48,6 +49,7 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
   // const [newtransaction, setNewTransaction] = useState({});
   const { auth } = useContext(AuthContext);
   const { accounts } = useContext(AccountContext);
+  const { categoriesIncome } = useContext(CategoriesIncomeContext);
 
   const {
     register,
@@ -122,15 +124,15 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
           {/* Category */}
           <HStack>
             <FormLabel htmlFor="category">category</FormLabel>
-            <Input {...register("category")} id="category"></Input>
+            {/* <Input {...register("category")} id="category"></Input> */}
 
-            {/* <Select {...register("category")} id="category">
-              {categories.map((category) => (
+            <Select {...register("category")} id="category">
+              {categoriesIncome.map((category) => (
                 <option key={category.id} value={category.name}>
                   {category.name}
                 </option>
               ))}
-            </Select> */}
+            </Select>
           </HStack>
           {errors.category && (
             <Text fontSize={style.errorFontSize} color={style.colorDanger}>

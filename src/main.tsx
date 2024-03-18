@@ -7,22 +7,25 @@ import theme from "./theme.ts";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DataContextProvider } from "./components/context/DataContext.tsx";
 import { AccountContextProvider } from "./components/context/AccountContext.tsx";
+import { CategoriesIncomeContextProvider } from "./components/context/CategoryIncomeContext.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
-        <AuthContextProvider>
-          <DataContextProvider>
-            <AccountContextProvider>
-              <ColorModeScript
-                initialColorMode={theme.config.initialColorMode}
-              />
-              <Routes>
-                <Route path="/*" element={<App />} />
-              </Routes>
-            </AccountContextProvider>
-          </DataContextProvider>
-        </AuthContextProvider>
+        <CategoriesIncomeContextProvider>
+          <AuthContextProvider>
+            <DataContextProvider>
+              <AccountContextProvider>
+                <ColorModeScript
+                  initialColorMode={theme.config.initialColorMode}
+                />
+                <Routes>
+                  <Route path="/*" element={<App />} />
+                </Routes>
+              </AccountContextProvider>
+            </DataContextProvider>
+          </AuthContextProvider>
+        </CategoriesIncomeContextProvider>
       </ChakraProvider>
     </BrowserRouter>
   </React.StrictMode>

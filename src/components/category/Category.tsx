@@ -7,7 +7,7 @@ import {
   Box,
   Heading,
 } from "@chakra-ui/react";
-import CategoryIncome from "./CategoryIncome";
+import CategoryIncome from "./CategoriesIncome";
 import CategoryExpense from "./CategoryExpense";
 
 const Category = () => {
