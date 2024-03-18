@@ -13,11 +13,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useReducer } from "react";
 import { CiTrash } from "react-icons/ci";
 import { CiEdit } from "react-icons/ci";
+import { AccountContext } from "../context/AccountContext";
 
 const ACCOUNT_URL = "/api/accounts";
 
@@ -34,7 +35,8 @@ type AccountFormData = {
 const Account = () => {
   const { auth } = useContext(AuthContext);
   const [update, forceUpdate] = useReducer((x) => x + 1, 0);
-  const [accounts, setAccounts] = useState<AccountFormData[]>([]);
+  // const [accounts, setAccounts] = useState<AccountFormData[]>([]);
+  const { accounts, setAccounts } = useContext(AccountContext);
 
   const {
     register,
@@ -56,6 +58,7 @@ const Account = () => {
           },
         }
       );
+      console.log(accounts); ///////// intresting
       forceUpdate();
     } catch (err) {
       console.error(err);

@@ -5,7 +5,6 @@ import {
   FormLabel,
   HStack,
   Input,
-  StackDivider,
   VStack,
   Heading,
   Select,
@@ -18,8 +17,7 @@ import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import accounts from "../../data/accounts";
-import categories from "../../data/categories";
+import { AccountContext } from "../context/AccountContext";
 
 const TRANSACTION_URL = "/api/transactions";
 
@@ -49,6 +47,7 @@ type EpxenseFormData = z.infer<typeof schema>;
 export const TransactionForm = ({ forceUpdate }: Props) => {
   // const [newtransaction, setNewTransaction] = useState({});
   const { auth } = useContext(AuthContext);
+  const { accounts } = useContext(AccountContext);
 
   const {
     register,
@@ -86,25 +85,6 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
         })}
       >
         <Stack p={2} align="stretch" gap={3}>
-          {/* Account */}
-          <HStack>
-            <FormLabel htmlFor="account">account</FormLabel>
-            <Input {...register("account")} id="account"></Input>
-
-            {/* <Select {...register("account")} id="account">
-              {accounts.map((account) => (
-                <option key={account.id} value={account.name}>
-                  {account.name}
-                </option>
-              ))}
-            </Select> */}
-          </HStack>
-          {errors.account && (
-            <Text fontSize={style.errorFontSize} color={style.colorDanger}>
-              {errors.account.message}
-            </Text>
-          )}
-
           {/* Type */}
           <HStack>
             <FormLabel htmlFor="type">type</FormLabel>
@@ -117,6 +97,25 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
           {errors.type && (
             <Text fontSize={style.errorFontSize} color={style.colorDanger}>
               {errors.type.message}
+            </Text>
+          )}
+
+          {/* Account */}
+          <HStack>
+            <FormLabel htmlFor="account">account</FormLabel>
+            {/* <Input {...register("account")} id="account"></Input> */}
+
+            <Select {...register("account")} id="account">
+              {accounts.map((account) => (
+                <option key={account.id} value={account.name}>
+                  {account.name}
+                </option>
+              ))}
+            </Select>
+          </HStack>
+          {errors.account && (
+            <Text fontSize={style.errorFontSize} color={style.colorDanger}>
+              {errors.account.message}
             </Text>
           )}
 
