@@ -24,7 +24,11 @@ export const CategoriesExpenseContext = createContext<CategoriesExpenseType>({
       updatedAt: "",
     },
   ],
-  setCategoriesExpense: (_categoriesExpense: CategoriesExpense[]) => {},
+  setCategoriesExpense: function (
+    _CategoriesExpense: CategoriesExpense[]
+  ): void {
+    throw new Error("Function not implemented.");
+  },
 });
 
 export const CategoriesExpenseContextProvider = ({

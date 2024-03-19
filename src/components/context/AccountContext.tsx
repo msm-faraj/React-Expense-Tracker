@@ -24,7 +24,9 @@ export const AccountContext = createContext<AccountContextType>({
       updatedAt: "0001",
     },
   ],
-  setAccounts: (_accounts: Account[]) => {},
+  setAccounts: function (_accounts: Account[]): void {
+    throw new Error("Function not implemented.");
+  },
 });
 
 export const AccountContextProvider = ({ children }: PropsWithChildren<{}>) => {

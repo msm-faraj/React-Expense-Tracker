@@ -12,7 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useReducer } from "react";
 import { CiEdit, CiTrash } from "react-icons/ci";
@@ -31,6 +31,9 @@ type CategoryFormData = {
   name: string;
   type: string;
   userId: string;
+  createdAt: string;
+  deletedAt: string;
+  updatedAt: string;
 };
 
 const CategoryExpense = () => {
@@ -90,7 +93,7 @@ const CategoryExpense = () => {
           "x-auth-token": auth.accessToken,
         },
       })
-      .then((res) => setCategoriesExpense(res.data));
+      .then((res) => setCategoriesExpense(res.data)); /////
   }, [update]);
 
   return (

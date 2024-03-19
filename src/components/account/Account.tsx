@@ -20,7 +20,7 @@ import { CiTrash } from "react-icons/ci";
 import { CiEdit } from "react-icons/ci";
 import { AccountContext } from "../context/AccountContext";
 
-const ACCOUNT_URL = "/api/accounts";
+const ACCOUNTS_URL = "/api/accounts";
 
 const schema = z.object({
   name: z.string().min(3).max(50),
@@ -30,6 +30,10 @@ const schema = z.object({
 type AccountFormData = {
   id: string;
   name: string;
+  userId: string;
+  createdAt: string;
+  deletedAt: string;
+  updatedAt: string;
 };
 
 const Account = () => {
@@ -48,7 +52,7 @@ const Account = () => {
   const onSubmit = async (e: AccountFormData) => {
     try {
       await axios.post(
-        ACCOUNT_URL,
+        ACCOUNTS_URL,
         {
           name: e.name,
         },
@@ -58,7 +62,6 @@ const Account = () => {
           },
         }
       );
-      console.log(accounts); ///////// intresting
       forceUpdate();
     } catch (err) {
       console.error(err);
@@ -66,7 +69,7 @@ const Account = () => {
   };
   const onDelete = async (id: string) => {
     try {
-      await axios.delete(`${ACCOUNT_URL}/${id}`, {
+      await axios.delete(`${ACCOUNTS_URL}/${id}`, {
         headers: {
           "x-auth-token": auth.accessToken,
         },
@@ -80,12 +83,12 @@ const Account = () => {
 
   useEffect(() => {
     axios
-      .get<AccountFormData[]>(ACCOUNT_URL, {
+      .get<AccountFormData[]>(ACCOUNTS_URL, {
         headers: {
           "x-auth-token": auth.accessToken,
         },
       })
-      .then((res) => setAccounts(res.data));
+      .then((res) => setAccounts(res.data)); //////
   }, [update]);
 
   return (

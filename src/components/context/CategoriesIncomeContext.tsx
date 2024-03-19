@@ -24,7 +24,9 @@ export const CategoriesIncomeContext = createContext<CategoriesIncomeType>({
       updatedAt: "",
     },
   ],
-  setCategoriesIncome: (_categoriesIncome: CategoriesIncome[]) => {},
+  setCategoriesIncome: function (_CategoriesIncome: CategoriesIncome[]): void {
+    throw new Error("Function not implemented.");
+  },
 });
 
 export const CategoriesIncomeContextProvider = ({

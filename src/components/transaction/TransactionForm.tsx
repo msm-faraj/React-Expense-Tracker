@@ -15,7 +15,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
-import { useContext, useState } from "react";
+import { SetStateAction, useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { AccountContext } from "../context/AccountContext";
 import { CategoriesIncomeContext } from "../context/CategoriesIncomeContext";
@@ -61,7 +61,7 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
     formState: { errors, isValid },
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
 
-  const handleTypeClick = (text) => {
+  const handleTypeClick = (text: SetStateAction<string>) => {
     setTransactionType(text);
   };
 
@@ -100,7 +100,7 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
               {...register("type")}
               id="type"
               name="type"
-              onClick={() => handleTypeClick(type.value)}
+              onClick={() => handleTypeClick(type.value)} ///////
             >
               <option value="expense">expense</option>
               <option value="income">income</option>
