@@ -15,10 +15,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { AccountContext } from "../context/AccountContext";
-import { CategoriesIncomeContext } from "../context/CategoryIncomeContext";
+import { CategoriesIncomeContext } from "../context/CategoriesIncomeContext";
+import { CategoriesExpenseContext } from "../context/CategoriesExpenseContext";
 
 const TRANSACTION_URL = "/api/transactions";
 
@@ -31,7 +32,7 @@ const schema = z.object({
   type: z.string(),
   date: z.string(),
   note: z.string().min(3).max(50),
-  amount: z.number().min(0.01).max(100_000),
+  amount: z.number().min(0.01).max(100_000_000),
   account: z.string().min(3).max(50),
   category: z.string(),
   description: z
@@ -50,6 +51,8 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
   const { auth } = useContext(AuthContext);
   const { accounts } = useContext(AccountContext);
   const { categoriesIncome } = useContext(CategoriesIncomeContext);
+  const { categoriesExpense } = useContext(CategoriesExpenseContext);
+  const [transactionType, setTransactionType] = useState("expense");
 
   const {
     register,
@@ -58,6 +61,10 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
     formState: { errors, isValid },
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
 
+  const handleTypeClick = (text) => {
+    setTransactionType(text);
+  };
+
   const onSubmit = async (e: EpxenseFormData) => {
     try {
       await axios.post(TRANSACTION_URL, e, {
@@ -65,8 +72,7 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
           "x-auth-token": auth.accessToken,
         },
       });
-      // console.log(response.data);
-      // setNewTransaction(response.data);
+
       forceUpdate();
     } catch (err) {
       console.error(err);
@@ -90,10 +96,14 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
           {/* Type */}
           <HStack>
             <FormLabel htmlFor="type">type</FormLabel>
-            <Select {...register("type")} id="type">
-              {/* <option>Select Type</option> */}
-              <option>expense</option>
-              <option>income</option>
+            <Select
+              {...register("type")}
+              id="type"
+              name="type"
+              onClick={() => handleTypeClick(type.value)}
+            >
+              <option value="expense">expense</option>
+              <option value="income">income</option>
             </Select>
           </HStack>
           {errors.type && (
@@ -127,11 +137,17 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
             {/* <Input {...register("category")} id="category"></Input> */}
 
             <Select {...register("category")} id="category">
-              {categoriesIncome.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
+              {transactionType === "expense"
+                ? categoriesExpense.map((x) => (
+                    <option value={x.name} key={x.id}>
+                      {x.name}
+                    </option>
+                  ))
+                : categoriesIncome.map((z) => (
+                    <option value={z.name} key={z.id}>
+                      {z.name}
+                    </option>
+                  ))}
             </Select>
           </HStack>
           {errors.category && (

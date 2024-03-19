@@ -16,12 +16,12 @@ type CategoriesIncomeType = {
 export const CategoriesIncomeContext = createContext<CategoriesIncomeType>({
   categoriesIncome: [
     {
-      id: "1",
-      name: "name1",
-      userId: "id1",
-      createdAt: "01",
-      deletedAt: "001",
-      updatedAt: "0001",
+      id: "",
+      name: "",
+      userId: "",
+      createdAt: "",
+      deletedAt: "",
+      updatedAt: "",
     },
   ],
   setCategoriesIncome: (_categoriesIncome: CategoriesIncome[]) => {},

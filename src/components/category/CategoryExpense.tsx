@@ -16,6 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useReducer } from "react";
 import { CiEdit, CiTrash } from "react-icons/ci";
+import { CategoriesExpenseContext } from "../context/CategoriesExpenseContext";
 
 const CATEGORY_URL = "/api/categories";
 const CATEGORY_GET_URL = "/api/categories/expense";
@@ -35,8 +36,11 @@ type CategoryFormData = {
 const CategoryExpense = () => {
   const { auth } = useContext(AuthContext);
   const [update, forceUpdate] = useReducer((x) => x + 1, 0);
-  const [categoriesExpense, setCategoriesIncome] = useState<CategoryFormData[]>(
-    []
+  // const [categoriesExpense, setCategoriesIncome] = useState<CategoryFormData[]>(
+  //   []
+  // );
+  const { categoriesExpense, setCategoriesExpense } = useContext(
+    CategoriesExpenseContext
   );
 
   const {
@@ -86,7 +90,7 @@ const CategoryExpense = () => {
           "x-auth-token": auth.accessToken,
         },
       })
-      .then((res) => setCategoriesIncome(res.data));
+      .then((res) => setCategoriesExpense(res.data));
   }, [update]);
 
   return (

@@ -16,7 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useReducer } from "react";
 import { CiEdit, CiTrash } from "react-icons/ci";
-import { CategoriesIncomeContext } from "../context/CategoryIncomeContext";
+import { CategoriesIncomeContext } from "../context/CategoriesIncomeContext";
 
 const CATEGORY_URL = "/api/categories";
 const CATEGORY_GET_URL = "/api/categories/income";
