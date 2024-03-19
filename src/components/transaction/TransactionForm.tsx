@@ -15,7 +15,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
-import { SetStateAction, useContext, useState } from "react";
+import { SetStateAction, useContext, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { AccountContext } from "../context/AccountContext";
 import { CategoriesIncomeContext } from "../context/CategoriesIncomeContext";
@@ -53,6 +53,7 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
   const { categoriesIncome } = useContext(CategoriesIncomeContext);
   const { categoriesExpense } = useContext(CategoriesExpenseContext);
   const [transactionType, setTransactionType] = useState("expense");
+  const typeRef = useRef<HTMLSelectElement>(null);
 
   const {
     register,
@@ -61,8 +62,11 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
     formState: { errors, isValid },
   } = useForm<EpxenseFormData>({ resolver: zodResolver(schema) });
 
-  const handleTypeClick = (text: SetStateAction<string>) => {
-    setTransactionType(text);
+  // const handleTypeClick = (text: SetStateAction<string>) => {
+  //   setTransactionType(text);
+  // };
+  const handleTypeClick = () => {
+    if (typeRef.current !== null) setTransactionType(typeRef.current.value);
   };
 
   const onSubmit = async (e: EpxenseFormData) => {
@@ -98,9 +102,11 @@ export const TransactionForm = ({ forceUpdate }: Props) => {
             <FormLabel htmlFor="type">type</FormLabel>
             <Select
               {...register("type")}
+              ref={typeRef}
               id="type"
               name="type"
-              onClick={() => handleTypeClick(type.value)} ///////
+              // onClick={() => handleTypeClick(type.value)} ///////
+              onClick={handleTypeClick}
             >
               <option value="expense">expense</option>
               <option value="income">income</option>
