@@ -12,10 +12,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "../../api/axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useReducer } from "react";
 import { CiEdit, CiTrash } from "react-icons/ci";
+import { CategoriesIncomeContext } from "../context/CategoriesIncomeContext";
 
 const CATEGORY_URL = "/api/categories";
 const CATEGORY_GET_URL = "/api/categories/income";
@@ -30,14 +31,20 @@ type CategoryFormData = {
   name: string;
   type: string;
   userId: string;
+  createdAt: string;
+  deletedAt: string;
+  updatedAt: string;
 };
 
 const CategoryIncome = () => {
   const { auth } = useContext(AuthContext);
-  const [update, forceUpdate] = useReducer((x) => x + 1, 0);
-  const [categoriesIncome, setCategoriesIncome] = useState<CategoryFormData[]>(
-    []
+  const { categoriesIncome, setCategoriesIncome } = useContext(
+    CategoriesIncomeContext
   );
+  const [update, forceUpdate] = useReducer((x) => x + 1, 0);
+  // const [categoriesIncome, setCategoriesIncome] = useState<CategoryFormData[]>(
+  //   []
+  // );
 
   const {
     register,
@@ -86,7 +93,7 @@ const CategoryIncome = () => {
           "x-auth-token": auth.accessToken,
         },
       })
-      .then((res) => setCategoriesIncome(res.data));
+      .then((res) => setCategoriesIncome(res.data)); //////
   }, [update]);
 
   return (

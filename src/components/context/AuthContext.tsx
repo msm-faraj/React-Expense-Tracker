@@ -8,9 +8,9 @@ type Auth = {
 
 export const AuthContext = createContext({
   auth: {
-    email: "string",
-    password: "string",
-    accessToken: "string",
+    email: "",
+    password: "",
+    accessToken: "",
   },
   setAuth: (_auth: Auth) => {},
 });
@@ -18,8 +18,8 @@ export const AuthContext = createContext({
 export const AuthContextProvider = ({ children }: PropsWithChildren<{}>) => {
   const [auth, setAuth] = useState<Auth>({
     email: "",
-    password: "string",
-    accessToken: "string",
+    password: "",
+    accessToken: "",
   });
 
   const value = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);

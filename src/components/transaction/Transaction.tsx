@@ -1,6 +1,6 @@
 import { useReducer } from "react";
-import { TransactionForm } from "./TransactionForm";
 import { TransactionTable } from "./TransactionTable";
+import TransactionForm from "./TransactionForm";
 
 interface Transaction {
   type: string;
