@@ -15,20 +15,27 @@ interface Props {
 
 const TransactionForm = ({ forceUpdate }: Props) => {
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"} mb={10}>
-      <Heading p={2} borderRadius={5} as={"h2"} fontSize={20}>
+    <Box
+      boxShadow={"dark-lg"}
+      p={3}
+      borderRadius={2}
+      w={"98%"}
+      h={"620px"}
+      overflowY={"scroll"}
+    >
+      <Heading p={2} borderRadius={5} as={"h2"} fontSize={"1rem"}>
         Transactions
       </Heading>
       <Tabs isFitted size="md" variant="line">
         <TabList>
-          <Tab>Income</Tab>
-          <Tab>Expense</Tab>
+          <Tab fontSize={"1rem"}>Income</Tab>
+          <Tab fontSize={"1rem"}>Expense</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
+          <TabPanel p={3}>
             <TransactionIncomeForm forceUpdate={forceUpdate} />
           </TabPanel>
-          <TabPanel>
+          <TabPanel p={3}>
             <TransactionExpenseForm forceUpdate={forceUpdate} />
           </TabPanel>
         </TabPanels>

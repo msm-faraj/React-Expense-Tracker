@@ -17,7 +17,6 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { AccountContext } from "../context/AccountContext";
 import { CategoriesIncomeContext } from "../context/CategoriesIncomeContext";
-// import { CategoriesExpenseContext } from "../context/CategoriesExpenseContext";
 
 const TRANSACTION_URL = "/api/transactions";
 
@@ -25,6 +24,8 @@ const style = {
   colorDanger: "red.600",
   errorFontSize: "sm",
   labelWidth: "25%",
+  inputSize: "sm",
+  lableSize: "sm",
 };
 
 const schema = z.object({
@@ -46,12 +47,9 @@ interface Props {
 type EpxenseFormData = z.infer<typeof schema>;
 
 export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
-  // const [newtransaction, setNewTransaction] = useState({});
   const { auth } = useContext(AuthContext);
   const { accounts } = useContext(AccountContext);
   const { categoriesIncome } = useContext(CategoriesIncomeContext);
-  // const { categoriesExpense } = useContext(CategoriesExpenseContext);
-  // const [transactionType, setTransactionType] = useState("expense");
 
   const {
     register,
@@ -94,19 +92,23 @@ export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
           reset();
         })}
       >
-        <Stack p={2} align="stretch" gap={3}>
+        <Stack p={2} align="stretch" gap={2}>
           {/* Type */}
           <HStack>
-            <FormLabel w={style.labelWidth} htmlFor="type">
+            <FormLabel
+              fontSize={style.lableSize}
+              w={style.labelWidth}
+              htmlFor="type"
+            >
               type
             </FormLabel>
             <Select
+              size={style.inputSize}
               {...register("type")}
               id="type"
               name="type"
               // onClick={() => handleTypeClick(type.value)}
             >
-              {/* <option value={"expense"}>expense</option> */}
               <option value={"income"}>income</option>
             </Select>
           </HStack>
@@ -118,12 +120,20 @@ export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
 
           {/* Account */}
           <HStack>
-            <FormLabel w={style.labelWidth} htmlFor="account">
+            <FormLabel
+              fontSize={style.lableSize}
+              w={style.labelWidth}
+              htmlFor="account"
+            >
               account
             </FormLabel>
             {/* <Input {...register("account")} id="account"></Input> */}
 
-            <Select {...register("account")} id="account">
+            <Select
+              size={style.inputSize}
+              {...register("account")}
+              id="account"
+            >
               {accounts.map((account) => (
                 <option key={account.id} value={account.name}>
                   {account.name}
@@ -139,12 +149,20 @@ export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
 
           {/* Category */}
           <HStack>
-            <FormLabel w={style.labelWidth} htmlFor="category">
+            <FormLabel
+              fontSize={style.lableSize}
+              w={style.labelWidth}
+              htmlFor="category"
+            >
               category
             </FormLabel>
             {/* <Input {...register("category")} id="category"></Input> */}
 
-            <Select {...register("category")} id="category">
+            <Select
+              size={style.inputSize}
+              {...register("category")}
+              id="category"
+            >
               {categoriesIncome.map((x) => (
                 <option value={x.name} key={x.id}>
                   {x.name}
@@ -160,10 +178,15 @@ export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
 
           {/* Date */}
           <HStack>
-            <FormLabel w={style.labelWidth} htmlFor="date">
+            <FormLabel
+              fontSize={style.lableSize}
+              w={style.labelWidth}
+              htmlFor="date"
+            >
               date
             </FormLabel>
             <Input
+              size={style.inputSize}
               type="datetime-local"
               {...register("date")}
               id="date"
@@ -177,10 +200,15 @@ export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
 
           {/* Amount */}
           <HStack>
-            <FormLabel w={style.labelWidth} htmlFor="amount">
+            <FormLabel
+              fontSize={style.lableSize}
+              w={style.labelWidth}
+              htmlFor="amount"
+            >
               amount
             </FormLabel>
             <Input
+              size={style.inputSize}
               {...register("amount", { valueAsNumber: true })}
               id="amount"
               type="number"
@@ -195,10 +223,15 @@ export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
 
           {/* Note */}
           <HStack>
-            <FormLabel w={style.labelWidth} htmlFor="note">
+            <FormLabel
+              fontSize={style.lableSize}
+              w={style.labelWidth}
+              htmlFor="note"
+            >
               note
             </FormLabel>
             <Input
+              size={style.inputSize}
               {...register("note")}
               id="note"
               type="text"
@@ -213,10 +246,15 @@ export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
 
           {/* Description */}
           <HStack>
-            <FormLabel w={style.labelWidth} htmlFor="description">
+            <FormLabel
+              fontSize={style.lableSize}
+              w={style.labelWidth}
+              htmlFor="description"
+            >
               descripton
             </FormLabel>
             <Input
+              size={style.inputSize}
               {...register("description")}
               id="description"
               type="text"
@@ -228,7 +266,12 @@ export const TransactionIncomeForm = ({ forceUpdate }: Props) => {
               {errors.description.message}
             </Text>
           )}
-          <Button mt={5} isDisabled={!isValid} type="submit">
+          <Button
+            size={style.inputSize}
+            mt={5}
+            isDisabled={!isValid}
+            type="submit"
+          >
             Add
           </Button>
         </Stack>

@@ -107,13 +107,24 @@ const CategoryExpense = () => {
         <VStack align="stretch">
           {/* Account */}
           <HStack p={1}>
-            <Input {...register("name")} id="name" type="text"></Input>
-            <Button isDisabled={!isValid} type="submit">
+            <Input
+              borderRadius={5}
+              size={"sm"}
+              {...register("name")}
+              id="name"
+              type="text"
+            ></Input>
+            <Button
+              size={"sm"}
+              fontSize={"0.8rem"}
+              isDisabled={!isValid}
+              type="submit"
+            >
               Add
             </Button>
           </HStack>
           {errors.name && (
-            <Text p={1} fontSize={12} color={"red.500"}>
+            <Text p={1} fontSize={"0.8rem"} color={"red.500"}>
               {errors.name.message}
             </Text>
           )}
@@ -125,22 +136,22 @@ const CategoryExpense = () => {
                 boxShadow={"base"}
                 borderRadius={5}
                 key={expenseCategory.id}
-                p={2}
-                pl={3}
+                p={1}
+                pl={2}
               >
-                <Text fontSize={"1rem"}>{expenseCategory.name}</Text>
-                <HStack gap={5} pr={3}>
+                <Text fontSize={"0.8rem"}>{expenseCategory.name}</Text>
+                <HStack gap={2}>
                   <Icon
                     // onClick={onEdit}
                     color={"green.400"}
-                    fontSize={"1.5rem"}
+                    fontSize={"1.3rem"}
                   >
                     <CiEdit />
                   </Icon>
                   <Icon
                     onClick={() => onDelete(expenseCategory.id)}
                     color={"red.400"}
-                    fontSize={"1.5rem"}
+                    fontSize={"1.3rem"}
                   >
                     <CiTrash />
                   </Icon>
