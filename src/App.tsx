@@ -41,11 +41,7 @@ function App() {
         <Route
           // Home page
           path="/api/home"
-          element={
-            <>
-              <Home />
-            </>
-          }
+          element={<Home />}
         ></Route>
       </Routes>
     </>

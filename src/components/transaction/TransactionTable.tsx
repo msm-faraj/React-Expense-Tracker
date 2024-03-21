@@ -6,6 +6,7 @@ import {
   Button,
   HStack,
   Heading,
+  Select,
   Table,
   TableContainer,
   Tbody,
@@ -17,32 +18,35 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { RxCaretSort } from "react-icons/rx";
+import { AccountContext } from "../context/AccountContext";
+import { CategoriesIncomeContext } from "../context/CategoriesIncomeContext";
+import { CategoriesExpenseContext } from "../context/CategoriesExpenseContext";
 const GET_TRANSACTION_URL = "/api/transactions";
 
-interface Transaction {
+type Transaction = {
   type: string;
   amount: number;
   note: string;
   description: string;
   date: string;
   id: string;
-}
+  accountId: string;
+  categoryId: string;
+};
 
-// interface Category {
-//   id: number;
-//   name: string;
-// }
-// interface Account {
-//   id: number;
-//   name: string;
-// }
 interface Props {
   update: number;
+  forceUpdate: () => void;
 }
 
 export const TransactionTable = ({ update }: Props) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { auth } = useContext(AuthContext);
+  const { accounts } = useContext(AccountContext);
+  const { categoriesIncome } = useContext(CategoriesIncomeContext);
+  const { categoriesExpense } = useContext(CategoriesExpenseContext);
+  const categories = [...categoriesExpense, ...categoriesIncome];
+  const [selectedType, setSelectedType] = useState("");
 
   useEffect(() => {
     axios
@@ -54,11 +58,33 @@ export const TransactionTable = ({ update }: Props) => {
       .then((res) => setTransactions(res.data));
   }, [update]);
 
+  const handleClick = () => {
+    setTransactions(
+      transactions.map((trns) =>
+        true
+          ? { ...trns, date: "magic", categoryId: "magic", accountId: "magic" }
+          : trns
+      )
+    );
+  };
+
+  const onSelectType = (type: string) => {
+    setSelectedType(type);
+    // forceUpdate();
+  };
+  const visibleTransactions =
+    selectedType === "income"
+      ? transactions.filter((e) => e.type === "income")
+      : selectedType === "expense"
+      ? transactions.filter((e) => e.type === "expense")
+      : transactions;
+
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"90%"}>
+    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"98%"}>
       <Heading as={"h2"} size={"md"} pb={4}>
         Transaction Table
       </Heading>
+      <Button onClick={handleClick}>Magic</Button>
       <TableContainer
         maxWidth={"100%"}
         display={"block"}
@@ -68,19 +94,38 @@ export const TransactionTable = ({ update }: Props) => {
         <Table size={"xs"} variant={"simple"} overflow={"wrap"}>
           <Thead fontSize={"xs"}>
             <Tr>
-              {/* <Th>Time</Th> */}
-              <Th>Type</Th>
-              <Th>Amount</Th>
-              {/* <Th>
-              <ExpenseAccountFilter
-                onSelectedAccount={(account) => onSelectedAccount(account)}
-              ></ExpenseAccountFilter>
-            </Th>
-            <Th p={3}>
-              <ExpenseCategoryFilter
-                onSelectedCategory={(category) => onSelectCategory(category)}
-              ></ExpenseCategoryFilter>
-            </Th> */}
+              <Th>Time</Th>
+              <Th>
+                <Select
+                  onChange={(e) => onSelectType(e.target.value)}
+                  size={"xs"}
+                >
+                  <option>type</option>
+                  <option>income</option>
+                  <option>expense</option>
+                </Select>
+              </Th>
+              <Th>amount</Th>
+              <Th>
+                <Select size={"xs"}>
+                  <option>Account</option>
+                  {accounts.map((account) => (
+                    <option key={account.id} value={account.name}>
+                      {account.name}
+                    </option>
+                  ))}
+                </Select>
+              </Th>
+              <Th>
+                <Select size={"xs"}>
+                  <option>Category</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </Select>
+              </Th>
               <Th>
                 <HStack>
                   <Text>note</Text>
@@ -93,18 +138,16 @@ export const TransactionTable = ({ update }: Props) => {
             </Tr>
           </Thead>
           <Tbody fontSize={"xs"}>
-            {transactions
+            {visibleTransactions
               .slice(0)
               .reverse()
               .map((transaction) => (
                 <Tr key={transaction.id}>
-                  {/* <Td>{transaction.date}</Td> */}
+                  <Td>{transaction.date}</Td>
                   <Td>{transaction.type}</Td>
                   <Td>{transaction.amount}</Td>
-                  {/* <Td p={3} pl={2}>
-                  {transaction.acountId}
-                </Td>
-                <Td pl={2}>{transaction.categoryId}</Td> */}
+                  <Td>{transaction.accountId}</Td>
+                  <Td>{transaction.categoryId}</Td>
                   <Td>{transaction.note}</Td>
                   <Td>{transaction.description}</Td>
                   <Td>
