@@ -17,10 +17,10 @@ const TransactionForm = ({ forceUpdate }: Props) => {
   return (
     <Box
       boxShadow={"dark-lg"}
-      p={3}
-      borderRadius={2}
-      w={"98%"}
-      h={"620px"}
+      p={5}
+      borderRadius={5}
+      w={"full"}
+      h={"full"}
       overflowY={"scroll"}
     >
       <Heading p={2} borderRadius={5} as={"h2"} fontSize={"1rem"}>

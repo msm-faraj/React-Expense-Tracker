@@ -14,10 +14,10 @@ const Category = () => {
   return (
     <Box
       boxShadow={"dark-lg"}
-      p={2}
-      borderRadius={2}
-      w={"98%"}
-      h={"300px"}
+      p={3}
+      borderRadius={5}
+      w={"full"}
+      h={"full"}
       overflowY={"scroll"}
     >
       <Heading p={2} borderRadius={5} as={"h2"} fontSize={"0.8rem"}>

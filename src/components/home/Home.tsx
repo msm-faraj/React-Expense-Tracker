@@ -10,6 +10,7 @@ const Home = () => {
 
   return (
     <Grid
+      justifyContent={"center"}
       mt={16}
       templateAreas={`"acc acc trF trF trF"
                       "cat cat trF trF trF"
@@ -19,8 +20,6 @@ const Home = () => {
       gridTemplateColumns={"20vw 20svw 15vw 15vw 15vw"}
       gridTemplateRows={"300px 300px 1fr 300px"}
       gap={"5"}
-      ml={14}
-      mr={14}
     >
       <GridItem area={"acc"}>
         <Account />
@@ -38,7 +37,7 @@ const Home = () => {
         <TransactionTable forceUpdate={forceUpdate} update={update} />
       </GridItem>
 
-      <GridItem area={"grp"} bg={"blue.200"} borderRadius={5}></GridItem>
+      <GridItem area={"grp"} bg={"blackAlpha.700"} borderRadius={5}></GridItem>
     </Grid>
   );
 };
