@@ -41,6 +41,9 @@ interface Props {
 
 export const TransactionTable = ({ update }: Props) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [formattedTransactions, setFormattedTransactions] = useState<
+    Transaction[]
+  >([]);
   const { auth } = useContext(AuthContext);
   const { accounts } = useContext(AccountContext);
   const { categoriesIncome } = useContext(CategoriesIncomeContext);
@@ -48,30 +51,43 @@ export const TransactionTable = ({ update }: Props) => {
   const categories = [...categoriesExpense, ...categoriesIncome];
   const [selectedType, setSelectedType] = useState("");
 
+  async function fetchData() {
+    let res = await axios.get<Transaction[]>(GET_TRANSACTION_URL, {
+      headers: {
+        "x-auth-token": auth.accessToken,
+      },
+    });
+    setTransactions(res.data);
+  }
+
+  const dateChanger = (oldTransactions: Transaction[]) => {
+    const newFormattedTransactions: Transaction[] = [];
+    for (let i = 0; i < oldTransactions.length; i++) {
+      const newStyleDate = new Date(oldTransactions[i].date);
+      const year = newStyleDate.getFullYear();
+      const month = newStyleDate.getMonth() + 1;
+      const date = newStyleDate.getDate();
+      const fullNewStyledDate = `${year}-${month}-${date}`;
+      newFormattedTransactions.push({
+        ...oldTransactions[i],
+        date: fullNewStyledDate,
+      });
+    }
+    setFormattedTransactions(newFormattedTransactions); // Set formatted transactions separately
+  };
+
   useEffect(() => {
-    axios
-      .get<Transaction[]>(GET_TRANSACTION_URL, {
-        headers: {
-          "x-auth-token": auth.accessToken,
-        },
-      })
-      .then((res) => setTransactions(res.data));
+    fetchData();
   }, [update]);
 
-  const handleClick = () => {
-    setTransactions(
-      transactions.map((trns) =>
-        true
-          ? { ...trns, date: "magic", categoryId: "magic", accountId: "magic" }
-          : trns
-      )
-    );
-  };
+  useEffect(() => {
+    dateChanger(transactions);
+  }, [transactions]);
 
   const onSelectType = (type: string) => {
     setSelectedType(type);
-    // forceUpdate();
   };
+
   const visibleTransactions =
     selectedType === "income"
       ? transactions.filter((e) => e.type === "income")
@@ -84,7 +100,7 @@ export const TransactionTable = ({ update }: Props) => {
       <Heading as={"h2"} size={"md"} pb={4}>
         Transaction Table
       </Heading>
-      <Button onClick={handleClick}>Magic</Button>
+
       <TableContainer
         maxWidth={"100%"}
         display={"block"}
@@ -138,7 +154,7 @@ export const TransactionTable = ({ update }: Props) => {
             </Tr>
           </Thead>
           <Tbody fontSize={"xs"}>
-            {visibleTransactions
+            {formattedTransactions
               .slice(0)
               .reverse()
               .map((transaction) => (
@@ -171,7 +187,7 @@ export const TransactionTable = ({ update }: Props) => {
               <Th p={3}>Total</Th>
               <Th>
                 $
-                {transactions
+                {visibleTransactions
                   .reduce((acc, transaction) => transaction.amount + acc, 0)
                   .toFixed(2)}
               </Th>
