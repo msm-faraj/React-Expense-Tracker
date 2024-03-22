@@ -58,20 +58,15 @@ export const TransactionTable = ({ update }: Props) => {
     categoryId: string;
   }[] = [];
 
-  useEffect(() => {
-    axios
-      .get<Transaction[]>(GET_TRANSACTION_URL, {
-        headers: {
-          "x-auth-token": auth.accessToken,
-        },
-      })
-      .then((res) => {
-        setTransactions(res.data);
-        // dateChanger(transactions);
-        // setTransactions(newTransactions); // it doesn't work
-        console.log("first", newTransactions[0]);
-      });
-  }, [update]);
+  async function fetchData() {
+    let res = await axios.get<Transaction[]>(GET_TRANSACTION_URL, {
+      headers: {
+        "x-auth-token": auth.accessToken,
+      },
+    });
+    setTransactions(res.data);
+    console.log("fetchData called");
+  }
 
   const dateChanger = (oldTrnsaction: Transaction[]) => {
     for (let i = 0; i < oldTrnsaction.length; i++) {
@@ -85,18 +80,20 @@ export const TransactionTable = ({ update }: Props) => {
         date: fullNewStyledDate,
       });
     }
-    console.log("second", newTransactions[0]);
+    setTransactions(newTransactions);
+    console.log("dataChanger called");
   };
 
   useEffect(() => {
+    fetchData();
+  }, [update]);
+
+  useEffect(() => {
     dateChanger(transactions);
-    setTransactions(newTransactions); // it doesn't work
-    // console.log("transactions effect", transactions[0]);
   }, []);
 
   const onSelectType = (type: string) => {
     setSelectedType(type);
-    // forceUpdate();
   };
 
   const visibleTransactions =
@@ -111,7 +108,13 @@ export const TransactionTable = ({ update }: Props) => {
       <Heading as={"h2"} size={"md"} pb={4}>
         Transaction Table
       </Heading>
-
+      <Button
+        onClick={() => {
+          dateChanger(transactions);
+        }}
+      >
+        Change Date
+      </Button>
       <TableContainer
         maxWidth={"100%"}
         display={"block"}
