@@ -94,12 +94,12 @@ const Account = () => {
   return (
     <Box
       boxShadow={"dark-lg"}
-      p={5}
+      p={6}
       borderRadius={5}
       // m={2}
-      w={"98%"}
+      w={"full"}
       mb={10}
-      h={"300px"}
+      h={"full"}
       overflowY={"scroll"}
     >
       <form

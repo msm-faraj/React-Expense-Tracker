@@ -96,7 +96,7 @@ export const TransactionTable = ({ update }: Props) => {
       : formattedTransactions;
 
   return (
-    <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"98%"}>
+    <Box boxShadow={"dark-lg"} p={3} borderRadius={5}>
       <Heading as={"h2"} size={"md"} pb={4}>
         Transaction Table
       </Heading>
