@@ -90,10 +90,10 @@ export const TransactionTable = ({ update }: Props) => {
 
   const visibleTransactions =
     selectedType === "income"
-      ? transactions.filter((e) => e.type === "income")
+      ? formattedTransactions.filter((e) => e.type === "income")
       : selectedType === "expense"
-      ? transactions.filter((e) => e.type === "expense")
-      : transactions;
+      ? formattedTransactions.filter((e) => e.type === "expense")
+      : formattedTransactions;
 
   return (
     <Box boxShadow={"dark-lg"} p={5} borderRadius={5} m={2} w={"98%"}>
@@ -154,14 +154,14 @@ export const TransactionTable = ({ update }: Props) => {
             </Tr>
           </Thead>
           <Tbody fontSize={"xs"}>
-            {formattedTransactions
+            {visibleTransactions
               .slice(0)
               .reverse()
               .map((transaction) => (
                 <Tr key={transaction.id}>
                   <Td>{transaction.date}</Td>
                   <Td>{transaction.type}</Td>
-                  <Td>{transaction.amount}</Td>
+                  <Td>{`$ ${transaction.amount}`}</Td>
                   <Td>{transaction.accountId}</Td>
                   <Td>{transaction.categoryId}</Td>
                   <Td>{transaction.note}</Td>
