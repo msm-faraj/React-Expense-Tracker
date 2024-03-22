@@ -41,22 +41,15 @@ interface Props {
 
 export const TransactionTable = ({ update }: Props) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [formattedTransactions, setFormattedTransactions] = useState<
+    Transaction[]
+  >([]);
   const { auth } = useContext(AuthContext);
   const { accounts } = useContext(AccountContext);
   const { categoriesIncome } = useContext(CategoriesIncomeContext);
   const { categoriesExpense } = useContext(CategoriesExpenseContext);
   const categories = [...categoriesExpense, ...categoriesIncome];
   const [selectedType, setSelectedType] = useState("");
-  const newTransactions: {
-    date: string;
-    type: string;
-    amount: number;
-    note: string;
-    description: string;
-    id: string;
-    accountId: string;
-    categoryId: string;
-  }[] = [];
 
   async function fetchData() {
     let res = await axios.get<Transaction[]>(GET_TRANSACTION_URL, {
@@ -65,23 +58,22 @@ export const TransactionTable = ({ update }: Props) => {
       },
     });
     setTransactions(res.data);
-    console.log("fetchData called");
   }
 
-  const dateChanger = (oldTrnsaction: Transaction[]) => {
-    for (let i = 0; i < oldTrnsaction.length; i++) {
-      const newStyleDate = new Date(oldTrnsaction[i].date);
+  const dateChanger = (oldTransactions: Transaction[]) => {
+    const newFormattedTransactions: Transaction[] = [];
+    for (let i = 0; i < oldTransactions.length; i++) {
+      const newStyleDate = new Date(oldTransactions[i].date);
       const year = newStyleDate.getFullYear();
       const month = newStyleDate.getMonth() + 1;
       const date = newStyleDate.getDate();
       const fullNewStyledDate = `${year}-${month}-${date}`;
-      newTransactions.push({
-        ...oldTrnsaction[i],
+      newFormattedTransactions.push({
+        ...oldTransactions[i],
         date: fullNewStyledDate,
       });
     }
-    setTransactions(newTransactions);
-    console.log("dataChanger called");
+    setFormattedTransactions(newFormattedTransactions); // Set formatted transactions separately
   };
 
   useEffect(() => {
@@ -90,7 +82,7 @@ export const TransactionTable = ({ update }: Props) => {
 
   useEffect(() => {
     dateChanger(transactions);
-  }, []);
+  }, [transactions]);
 
   const onSelectType = (type: string) => {
     setSelectedType(type);
@@ -108,13 +100,7 @@ export const TransactionTable = ({ update }: Props) => {
       <Heading as={"h2"} size={"md"} pb={4}>
         Transaction Table
       </Heading>
-      <Button
-        onClick={() => {
-          dateChanger(transactions);
-        }}
-      >
-        Change Date
-      </Button>
+
       <TableContainer
         maxWidth={"100%"}
         display={"block"}
@@ -168,7 +154,7 @@ export const TransactionTable = ({ update }: Props) => {
             </Tr>
           </Thead>
           <Tbody fontSize={"xs"}>
-            {visibleTransactions
+            {formattedTransactions
               .slice(0)
               .reverse()
               .map((transaction) => (
