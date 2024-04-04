@@ -87,12 +87,12 @@ const SignIn = () => {
                 Sign In
               </Button>
             </form>
-            <Text mt={3}>
-              Need an Account? <br />
-              <Text as={"span"}>
-                {/* put router link here */}
-                <Link to="/">Sign Up</Link>
-              </Text>
+            <Text color={"gray.500"} mt={3}>
+              Need an Account?
+            </Text>
+            <Text as={"span"}>
+              {/* put router link here */}
+              <Link to="/">Sign Up</Link>
             </Text>
           </section>
         </Box>

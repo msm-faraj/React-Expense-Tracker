@@ -18,12 +18,14 @@ import { Box, Button, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
-  const usernameRef = useRef(null);
-  const errRef = useRef(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passRef = useRef<HTMLInputElement>(null);
+  const errRef = useRef<any>(null);
 
   const [username, setUsername] = useState("");
   const [validUsername, setValidUsername] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
+  const [usernameFocus, setUsernameFocus] = useState(false);
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
@@ -40,16 +42,24 @@ const SignUp = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
+  //Setting focus of fields
+  useEffect(() => {
+    if (usernameRef.current !== null) usernameRef.current.focus();
+  }, []);
+
+  //Validating username
   useEffect(() => {
     const result = USERNAME_REGEX.test(username);
     setValidUsername(result);
   }, [username]);
 
+  //Validating email
   useEffect(() => {
     const result = EMAIL_REGEX.test(email);
     setValidEmail(result);
   }, [email]);
 
+  //Validating password
   useEffect(() => {
     const result = PWD_REGEX.test(password);
     setValidPassword(result);
@@ -57,23 +67,31 @@ const SignUp = () => {
     setValidMatch(match);
   }, [password, matchPwd]);
 
+  //Setting error message
   useEffect(() => {
     setErrMsg("");
-  }, [username, password, matchPwd]);
+  }, [username, email, password, matchPwd]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response: any = await axios.post(REGISTER_URL, {
-        username: username,
-        email: email,
-        password: password,
+        username,
+        email,
+        password,
       });
-      console.log(response.data);
+      console.log(response);
       setSuccess(true);
       // clear input fields
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("User already registered.");
+      } else {
+        setErrMsg("Registration failed.");
+      }
+      if (errRef.current !== null) errRef.current.focus();
     }
   };
 
@@ -95,7 +113,7 @@ const SignUp = () => {
         <Box boxShadow={"dark-lg"} p={5} borderRadius={5}>
           <section>
             {errMsg && (
-              <Text ref={errRef} color={"red.600"}>
+              <Text ref={errRef} color={"red.600"} aria-live="assertive">
                 {errMsg}
               </Text>
             )}
@@ -115,26 +133,38 @@ const SignUp = () => {
                       <FontAwesomeIcon icon={faTimes} />
                     </Text>
                   ))}
+                <Input
+                  required
+                  type="text"
+                  id="username"
+                  value={username}
+                  ref={usernameRef}
+                  autoComplete="off"
+                  aria-describedby="usernote"
+                  onChange={(e) => setUsername(e.target.value)}
+                  aria-invalid={validUsername ? "false" : "true"}
+                  onFocus={() => setUsernameFocus(true)}
+                  onBlur={() => setUsernameFocus(false)}
+                ></Input>
               </FormLabel>
-              <Input
-                type="text"
-                id="username"
-                ref={usernameRef}
-                autoComplete="off"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-                required
-                aria-invalid={validUsername ? "false" : "true"}
-                // aria-describedby="uidnote"
-                onFocus={() => setEmailFocus(true)}
-                onBlur={() => setEmailFocus(false)}
-              ></Input>
-              {emailFocus && email && !validEmail && (
-                <Text color={"blue.600"} p={3}>
+              {/* error message for username */}
+              {usernameFocus && username && !validUsername && (
+                <Text
+                  fontSize={"0.9rem"}
+                  id="usernote"
+                  color={"blue.600"}
+                  p={2}
+                >
                   <FontAwesomeIcon icon={faInfoCircle} />
-                  {` Email must be a valid email.`}
+                  {` 4 to 24 characters.`}
+                  <br />
+                  Must begin with a letter.
+                  <br />
+                  Letters, numbers, underscores, hyphens allowed.
+                  <br />
                 </Text>
               )}
+
               {/* Email */}
               <FormLabel mt={4} htmlFor="email">
                 {`Email: `}
@@ -149,31 +179,33 @@ const SignUp = () => {
                       <FontAwesomeIcon icon={faTimes} />
                     </Text>
                   ))}
+                <Input
+                  required
+                  id="email"
+                  type="email"
+                  value={email}
+                  ref={emailRef}
+                  autoComplete="off"
+                  aria-describedby="emailnote"
+                  onChange={(e) => setEmail(e.target.value)}
+                  aria-invalid={validEmail ? "false" : "true"}
+                  onFocus={() => setEmailFocus(true)}
+                  onBlur={() => setEmailFocus(false)}
+                ></Input>
               </FormLabel>
-              <Input
-                type="email"
-                id="email"
-                ref={usernameRef}
-                autoComplete="off"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                required
-                aria-invalid={validUsername ? "false" : "true"}
-                aria-describedby="uidnote"
-                onFocus={() => setUserFocus(true)}
-                onBlur={() => setUserFocus(false)}
-              ></Input>
-              {userFocus && username && !validUsername && (
-                <Text color={"blue.600"} p={3}>
+              {/* error message for email */}
+              {emailFocus && email && !validEmail && (
+                <Text
+                  fontSize={"0.9rem"}
+                  id="emailnote"
+                  color={"blue.600"}
+                  p={2}
+                >
                   <FontAwesomeIcon icon={faInfoCircle} />
-                  {` 4 to 24 characters.`}
-                  <br />
-                  Must begin with a letter.
-                  <br />
-                  Letters, numbers, underscores, hyphens allowed.
-                  <br />
+                  {` Email must be a vald email.`}
                 </Text>
               )}
+
               {/* Password */}
               <FormLabel mt={4} htmlFor="password">
                 {`Password: `}
@@ -188,20 +220,27 @@ const SignUp = () => {
                       <FontAwesomeIcon icon={faTimes} />
                     </Text>
                   ))}
+                <Input
+                  required
+                  ref={passRef}
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  aria-invalid={validPassword ? "false" : "true"}
+                  aria-describedby="passnote"
+                  onFocus={() => setPasswordFocus(true)}
+                  onBlur={() => setPasswordFocus(false)}
+                ></Input>
               </FormLabel>
-              <Input
-                type="password"
-                id="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                required
-                aria-invalid={validPassword ? "false" : "true"}
-                aria-describedby="pwdnote"
-                onFocus={() => setPasswordFocus(true)}
-                onBlur={() => setPasswordFocus(false)}
-              ></Input>
+              {/* error message for password */}
               {passwordFocus && !validPassword && (
-                <Text color={"blue.600"} p={3}>
+                <Text
+                  fontSize={"0.9rem"}
+                  id="passnote"
+                  color={"blue.600"}
+                  p={2}
+                >
                   <FontAwesomeIcon icon={faInfoCircle} />
                   {` 8 to 24 characters.`}
                   <br />
@@ -209,24 +248,25 @@ const SignUp = () => {
                   special character.
                   <br />
                   Allowed special character:
-                  <Text as={"span"} aria-label="exclamation mark">
-                    !
-                  </Text>
                   <Text as={"span"} aria-label="at symbol">
-                    @
+                    {` @`}
+                  </Text>
+                  <Text as={"span"} aria-label="exclamation mark">
+                    {` !`}
                   </Text>
                   <Text as={"span"} aria-label="hashtag">
-                    #
+                    {` #`}
                   </Text>
                   <Text as={"span"} aria-label="dollar sign">
-                    $
+                    {` $`}
                   </Text>
                   <Text as={"span"} aria-label="percent">
-                    %
+                    {` %`}
                   </Text>
                   <br />
                 </Text>
               )}
+
               {/* Confirm Password */}
               <FormLabel mt={4} htmlFor="confirm_pwd">
                 {`Confirm Password: `}
@@ -241,23 +281,31 @@ const SignUp = () => {
                       <FontAwesomeIcon icon={faTimes} />
                     </Text>
                   ))}
+                <Input
+                  required
+                  type="password"
+                  id="confirm_pwd"
+                  aria-describedby="confirmnote"
+                  onChange={(e) => setMatchPwd(e.target.value)}
+                  aria-invalid={validPassword ? "false" : "true"}
+                  onFocus={() => setMatchFocus(true)}
+                  onBlur={() => setMatchFocus(false)}
+                ></Input>
               </FormLabel>
-              <Input
-                type="password"
-                id="confirm_pwd"
-                onChange={(e) => setMatchPwd(e.target.value)}
-                required
-                aria-invalid={validPassword ? "false" : "true"}
-                aria-describedby="confirmnote"
-                onFocus={() => setMatchFocus(true)}
-                onBlur={() => setMatchFocus(false)}
-              ></Input>
+              {/* error message for confirm password */}
               {matchFocus && !validMatch && (
-                <Text color={"blue.600"} p={3}>
+                <Text
+                  fontSize={"0.9rem"}
+                  id="confirmnote"
+                  color={"blue.600"}
+                  p={2}
+                >
                   <FontAwesomeIcon icon={faInfoCircle} />
                   {` Must match the first password input field.`}
                 </Text>
               )}
+
+              {/* Submit button */}
               <Button
                 type="submit"
                 mt={5}
@@ -269,12 +317,12 @@ const SignUp = () => {
                 Sign Up
               </Button>
             </form>
-            <Text mt={3}>
-              Already registerd? <br />
-              <Text as={"span"}>
-                {/* put router link here */}
-                <Link to="/api/login">Sign In</Link>
-              </Text>
+
+            <Text color={"gray.500"} mt={3}>
+              Already registerd?
+            </Text>
+            <Text as={"span"}>
+              <Link to="/api/login">Sign In</Link>
             </Text>
           </section>
         </Box>
