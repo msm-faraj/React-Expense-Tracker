@@ -4,7 +4,7 @@ import { AuthContext } from "./context/AuthContext";
 import axios from "../api/axios";
 import { Link } from "react-router-dom";
 
-const LOGIN_URL = "/api/login";
+const LOGIN_URL = "/api/auth/login";
 
 const SignIn = () => {
   const emailRef = useRef(null);
