@@ -26,12 +26,11 @@ const SignIn = () => {
         password,
         email,
       });
-      const accessToken = await response?.data?.token;
-      // console.log(accessToken);
+      const accessToken = await response?.data?.accessToken;
       const newAuth = {
-        email: email,
-        password: password,
-        accessToken: accessToken,
+        email,
+        password,
+        accessToken,
       };
       setAuth(newAuth);
       setSuccess(true);
