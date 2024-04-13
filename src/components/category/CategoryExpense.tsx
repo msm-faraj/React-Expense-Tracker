@@ -19,7 +19,7 @@ import { CiEdit, CiTrash } from "react-icons/ci";
 import { CategoriesExpenseContext } from "../context/CategoriesExpenseContext";
 
 const CATEGORY_URL = "/api/categories";
-const CATEGORY_GET_URL = "/api/categories/expense";
+const CATEGORY_GET_URL = "/api/categories/?type=expense";
 
 const schema = z.object({
   name: z.string().min(3).max(50),
