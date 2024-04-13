@@ -22,7 +22,23 @@ import { AccountContext } from "../context/AccountContext";
 import { CategoriesIncomeContext } from "../context/CategoriesIncomeContext";
 import { CategoriesExpenseContext } from "../context/CategoriesExpenseContext";
 const GET_TRANSACTION_URL = "/api/transactions";
-
+type Account = {
+  id: string;
+  name: string;
+  userId: string;
+  createdAt: string;
+  deletedAt: string;
+  updatedAt: string;
+};
+type Category = {
+  id: string;
+  name: string;
+  type: string;
+  userId: string;
+  createdAt: string;
+  deletedAt: string;
+  updatedAt: string;
+};
 type Transaction = {
   type: string;
   amount: number;
@@ -32,6 +48,8 @@ type Transaction = {
   id: string;
   accountId: string;
   categoryId: string;
+  account: Account;
+  category: Category;
 };
 
 interface Props {
@@ -162,8 +180,8 @@ export const TransactionTable = ({ update }: Props) => {
                   <Td>{transaction.date}</Td>
                   <Td>{transaction.type}</Td>
                   <Td>{`$ ${transaction.amount}`}</Td>
-                  <Td>{transaction.accountId}</Td>
-                  <Td>{transaction.categoryId}</Td>
+                  <Td>{transaction.account.name}</Td>
+                  <Td>{transaction.category.name}</Td>
                   <Td>{transaction.note}</Td>
                   <Td>{transaction.description}</Td>
                   <Td>
