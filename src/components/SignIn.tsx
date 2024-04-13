@@ -26,7 +26,8 @@ const SignIn = () => {
         password,
         email,
       });
-      const accessToken = await response?.data?.accessToken;
+      const accessToken = await response?.data?.token;
+      console.log(response.data);
       const newAuth = {
         email,
         password,
